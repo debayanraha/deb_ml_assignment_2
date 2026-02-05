@@ -29,7 +29,7 @@ models = {
     # "XGBoost": joblib.load("model/xgboost.pkl"),
 }
 
-scaler = joblib.load("model/logistic_regression_standard_scaler.pkl")
+# scaler = joblib.load("model/logistic_regression_standard_scaler.pkl")
 
 model_choice = st.selectbox("Select Model", list(models.keys()))
 
@@ -41,11 +41,11 @@ if uploaded_file:
     # X = df.drop("price_range", axis=1)
     # y = df["price_range"]
 
-    # Scaling logic
-    if model_choice in ["Logistic Regression", "KNN", "Naive Bayes"]:
-        X_input = scaler.transform(X)
-    else:
-        X_input = X
+    # # Scaling logic
+    # if model_choice in ["Logistic Regression", "KNN", "Naive Bayes"]:
+    #     X_input = scaler.transform(X)
+    # else:
+    #     X_input = X
 
     model = models[model_choice]
 
