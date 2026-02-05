@@ -38,8 +38,8 @@ if uploaded_file:
     st.subheader("Dataset Preview")
     st.dataframe(df.head())
 
-    X = df.drop("price_range", axis=1)
-    y = df["price_range"]
+    # X = df.drop("price_range", axis=1)
+    # y = df["price_range"]
 
     # Scaling logic
     if model_choice in ["Logistic Regression", "KNN", "Naive Bayes"]:
