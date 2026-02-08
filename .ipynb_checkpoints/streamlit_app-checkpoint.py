@@ -46,36 +46,36 @@ def predict_logistic_regression(df):
     # 6. Performance Score (ram * n_cores * clock_speed)
     df_engineered['performance_score'] = df_engineered['ram'] * df_engineered['n_cores'] * df_engineered['clock_speed']
     
-    print("New Features Created:")
-    print("="*80)
+    st.info("New Features Created:")
+    st.info("="*80)
     new_features = ['screen_area', 'screen_size', 'total_camera_mp', 'feature_count', 
                     'battery_efficiency', 'performance_score']
     for feature in new_features:
-        print(f"✓ {feature}")
+        st.info(f"✓ {feature}")
     
-    print(f"\nTotal Features: {df_engineered.shape[1] - 1} (Original: {df.shape[1] - 1}, New: {len(new_features)})")
+    st.info(f"\nTotal Features: {df_engineered.shape[1] - 1} (Original: {df.shape[1] - 1}, New: {len(new_features)})")
     df_engineered.head()
     
     
     # Check for missing values
-    print("Missing Values:")
-    print("="*80)
+    st.info("Missing Values:")
+    st.info("="*80)
     missing_values = df_engineered.isnull().sum()
-    print(missing_values)
-    print(f"\nTotal missing values: {missing_values.sum()}")
+    st.info(missing_values)
+    st.info(f"\nTotal missing values: {missing_values.sum()}")
     
     if missing_values.sum() == 0:
-        print("\n✓ No missing values found!")
+        st.info("\n✓ No missing values found!")
         
     
     # Check for duplicate rows
-    print("Duplicate Rows:")
-    print("="*80)
+    st.info("Duplicate Rows:")
+    st.info("="*80)
     duplicates = df_engineered.duplicated().sum()
-    print(f"Number of duplicate rows: {duplicates}")
+    st.info(f"Number of duplicate rows: {duplicates}")
     
     if duplicates == 0:
-        print("\n✓ No duplicate rows found!")
+        st.info("\n✓ No duplicate rows found!")
     
     
     # X = df_engineered.drop('price_range', axis=1)
@@ -91,15 +91,15 @@ def predict_logistic_regression(df):
     y_proba = model.predict_proba(X_test_scaled)
     
 
-    print("✓ Predictions completed!")
-    print("="*80)
-    print(f"Predictions shape: {y_pred.shape}")
-    print(f"\nPrediction probabilities shape (test): {y_proba.shape}")
-    print(f"(Each sample has 4 probabilities, one for each class)")
+    st.info("✓ Predictions completed!")
+    st.info("="*80)
+    st.info(f"Predictions shape: {y_pred.shape}")
+    st.info(f"\nPrediction probabilities shape (test): {y_proba.shape}")
+    st.info(f"(Each sample has 4 probabilities, one for each class)")
     
     # Sample predictions with probabilities
-    print("Sample Predictions with Probabilities:")
-    print("="*80)
+    st.info("Sample Predictions with Probabilities:")
+    st.info("="*80)
     sample_df = pd.DataFrame({
         'Predicted': y_pred[:10],
         'Prob_Class_0': y_proba[:10, 0],
@@ -107,7 +107,7 @@ def predict_logistic_regression(df):
         'Prob_Class_2': y_proba[:10, 2],
         'Prob_Class_3': y_proba[:10, 3]
     })
-    print(sample_df)
+    st.info(sample_df)
 
     
 
