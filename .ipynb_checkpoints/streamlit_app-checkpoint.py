@@ -62,6 +62,7 @@ st.dataframe(df.head())
 
 
 
+
 # Load models
 models = {
     "Logistic Regression": joblib.load("model/logistic_regression_model.pkl"),
@@ -74,7 +75,30 @@ models = {
 
 scaler = joblib.load("model/standard_scaler.pkl")
 
-model_choice = st.selectbox("Select Model", list(models.keys()))
+
+
+# Initialize session state
+if "confirmed" not in st.session_state:
+    st.session_state.confirmed = False
+
+# Confirmation button
+if st.button("✅ Confirm dataset & proceed to model selection"):
+    st.session_state.confirmed = True
+
+# Show selectbox ONLY after confirmation
+if st.session_state.confirmed:
+    st.subheader("Select Machine Learning Model for Prediction")
+    model_choice = st.selectbox(
+        "Select Model",
+        list(models.keys())
+    )
+    st.success(f"Selected model: {model_choice}")
+else:
+    st.info("Please confirm to proceed.")
+
+
+
+
 
 
 # Create a copy for feature engineering
