@@ -66,12 +66,12 @@ models = {
     "Logistic Regression": joblib.load("model/logistic_regression_model.pkl"),
     "Decision Tree": joblib.load("model/decision_tree_model.pkl"),
     "KNN": joblib.load("model/knn_model.pkl"),
-    "Naive Bayes": joblib.load("model/naive_bayes.pkl"),
-    "Random Forest": joblib.load("model/random_forest.pkl"),
-    "XGBoost": joblib.load("model/xgboost.pkl"),
+    "Gaussian Naive Bayes": joblib.load("model/gaussian_nb_model.pkl"),
+    "Random Forest": joblib.load("model/random_forest_model.pkl"),
+    "XGBoost": joblib.load("model/xgboost_model.pkl"),
 }
 
-scaler = joblib.load("model/logistic_regression_standard_scaler.pkl")
+scaler = joblib.load("model/standard_scaler.pkl")
 
 model_choice = st.selectbox("Select Model", list(models.keys()))
 
