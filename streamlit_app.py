@@ -99,7 +99,6 @@ if st.session_state.confirmed:
         st.warning("Please select a model to continue.")
     else:
         st.success(f"Selected model: {model_choice}")
-        
         handle_uploaded_dataset(df, models, scaler)
     
 else:
@@ -107,7 +106,7 @@ else:
 
 
 def handle_uploaded_dataset(df, models, scaler):
-    print ("inside def handle_uploaded_dataset(df, models, scaler): ")
+     st.success("inside def handle_uploaded_dataset(df, models, scaler): ")
 
 
 def handle_uploaded_dataset2(df, models, scaler):
