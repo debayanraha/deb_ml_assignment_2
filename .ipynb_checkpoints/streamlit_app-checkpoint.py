@@ -13,100 +13,203 @@ from sklearn.metrics import (
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-st.set_page_config(page_title="Mobile Price Classification", layout="wide")
-
-st.title("📱 Mobile Price Classification Models")
 
 
+def predict_logistic_regression(df):
 
-# Initialize session state
-if "confirmed" not in st.session_state:
-    st.session_state.confirmed = False
+    st.success("Inside predict_logistic_regression")
+    
+    models["Logistic Regression"] = joblib.load("model/logistic_regression_model.pkl")
 
+    st.success(models["Logistic Regression"].summery)
 
-DATA_PATH = Path("data/mobile_price_classification_test.csv")
-
-@st.cache_data
-def load_local_csv(path):
-    return pd.read_csv(path)
-
-if DATA_PATH.exists():
-    df = load_local_csv(DATA_PATH)
-    st.success("Built-in Test Dataset loaded successfully, having first 5 rows as:")
-    st.dataframe(df.head())
-else:
-    st.error("Dataset file not found in app folder.")
+    return
 
 
-csv_bytes = df.to_csv(index=False).encode("utf-8")
-
-st.download_button(
-    label="⬇️ Download Built-in Test Dataset",
-    data=csv_bytes,
-    file_name="mobile_price_classification_test.csv",
-    mime="text/csv"
-)
+def predict_decision_tree(df):
 
 
-st.subheader("Make a Prediction for Mobile Price")
+    st.success("Inside predict_decision_tree")
+    
+    models["Logistic Regression"] = joblib.load("model/decision_tree_model.pkl")
 
-source = st.radio(
-    "Choose your test dataset source:",
-    ["Predict using Built-in Test Dataset", "Upload your New Test Dataset"]
-)
+    st.success(models["Logistic Regression"].summery)
 
-if source == "Predict using Built-in Test Dataset":
-    df = load_local_csv(DATA_PATH)    
-else:
-    # Upload dataset
-    uploaded_file = st.file_uploader("Upload Test Dataset", type=["csv"])
-    if uploaded_file:
-        df = pd.read_csv(uploaded_file)
-
-st.subheader("Dataset Preview")
-st.dataframe(df.head())
+    return
 
 
+def predict_knn(df):
 
+    st.success("Inside predict_knn")
+    
+    models["Logistic Regression"] = joblib.load("model/knn_model.pkl")
 
-# Load models
-models = {
-    "Logistic Regression": joblib.load("model/logistic_regression_model.pkl"),
-    "Decision Tree": joblib.load("model/decision_tree_model.pkl"),
-    "KNN": joblib.load("model/knn_model.pkl"),
-    "Gaussian Naive Bayes": joblib.load("model/gaussian_nb_model.pkl"),
-    "Random Forest": joblib.load("model/random_forest_model.pkl"),
-    "XGBoost": joblib.load("model/xgboost_model.pkl"),
-}
+    st.success(models["Logistic Regression"].summery)
 
-scaler = joblib.load("model/standard_scaler.pkl")
-
-
-# Confirmation button
-if st.button("✅ Confirm dataset & proceed to model selection"):
-    st.session_state.confirmed = True
+    return
 
     
-# Show selectbox ONLY after confirmation
-if st.session_state.confirmed:
-    st.subheader("Select Machine Learning Model for Prediction")
-    model_choice = st.selectbox(
-        "Select Model",
-        options=["-- Select a model --"] + list(models.keys()),
-        index=0
-    )
-    if model_choice == "-- Select a model --":
-        st.warning("Please select a model to continue.")
+
+def predict_naive_bayes(df):
+
+
+    st.success("Inside predict_naive_bayes")
+    
+    models["Logistic Regression"] = joblib.load("model/gaussian_nb_model.pkl")
+
+    st.success(models["Logistic Regression"].summery)
+
+    return
+
+
+    
+def predict_random_forest(df):
+
+
+    st.success("Inside predict_random_forest")
+    
+    models["Logistic Regression"] = joblib.load("model/random_forest_model.pkl")
+
+    st.success(models["Logistic Regression"].summery)
+
+    return
+
+
+def predict_xgboost(df):
+
+
+    st.success("Inside predict_xgboost")
+    
+    models["Logistic Regression"] = joblib.load("model/xgboost_model.pkl")
+
+    st.success(models["Logistic Regression"].summery)
+
+    return
+
+
+
+if __name__ == "__main__":
+    main()
+
+
+
+def main():
+
+
+    st.set_page_config(page_title="Mobile Price Classification", layout="wide")
+    
+    st.title("📱 Mobile Price Classification Models")
+    
+    
+    
+    # Initialize session state
+    if "confirmed" not in st.session_state:
+        st.session_state.confirmed = False
+    
+    
+    DATA_PATH = Path("data/mobile_price_classification_test.csv")
+    
+    @st.cache_data
+    def load_local_csv(path):
+        return pd.read_csv(path)
+    
+    if DATA_PATH.exists():
+        df = load_local_csv(DATA_PATH)
+        st.success("Built-in Test Dataset loaded successfully, having first 5 rows as:")
+        st.dataframe(df.head())
     else:
-        st.success(f"Selected model: {model_choice}")
-        handle_uploaded_dataset(df, models, scaler)
+        st.error("Dataset file not found in app folder.")
     
-else:
-    st.info("Please confirm to proceed.")
+    
+    csv_bytes = df.to_csv(index=False).encode("utf-8")
+    
+    st.download_button(
+        label="⬇️ Download Built-in Test Dataset",
+        data=csv_bytes,
+        file_name="mobile_price_classification_test.csv",
+        mime="text/csv"
+    )
+    
+    
+    st.subheader("Make a Prediction for Mobile Price")
+    
+    source = st.radio(
+        "Choose your test dataset source:",
+        ["Predict using Built-in Test Dataset", "Upload your New Test Dataset"]
+    )
+    
+    if source == "Predict using Built-in Test Dataset":
+        df = load_local_csv(DATA_PATH)    
+    else:
+        # Upload dataset
+        uploaded_file = st.file_uploader("Upload Test Dataset", type=["csv"])
+        if uploaded_file:
+            df = pd.read_csv(uploaded_file)
+    
+    st.subheader("Dataset Preview")
+    st.dataframe(df.head())
+    
+    
+    
+    
+    # Load models
+    models = {
+        "Logistic Regression": joblib.load("model/logistic_regression_model.pkl"),
+        "Decision Tree": joblib.load("model/decision_tree_model.pkl"),
+        "KNN": joblib.load("model/knn_model.pkl"),
+        "Gaussian Naive Bayes": joblib.load("model/gaussian_nb_model.pkl"),
+        "Random Forest": joblib.load("model/random_forest_model.pkl"),
+        "XGBoost": joblib.load("model/xgboost_model.pkl"),
+    }
+    
+    scaler = joblib.load("model/standard_scaler.pkl")
+    
+    
+    # Confirmation button
+    if st.button("✅ Confirm dataset & proceed to model selection"):
+        st.session_state.confirmed = True
+    
+        
+    # Show selectbox ONLY after confirmation
+    if st.session_state.confirmed:
+        st.subheader("Select Machine Learning Model for Prediction")
+        model_choice = st.selectbox(
+            "Select Model",
+            options=["-- Select a model --"] + list(models.keys()),
+            index=0
+        )
+        if model_choice == "-- Select a model --":
+            st.warning("Please select a model to continue.")
+        else:
+            st.success(f"Selected model: {model_choice}")
+            
+            if model_choice == "Logistic Regression":
+                predict_logistic_regression(df)
+                
+            elif model_choice == "Decision Tree":
+                predict_decision_tree(df)
+        
+            elif model_choice == "KNN":
+                predict_knn(df)
+        
+            elif model_choice == "Naive Bayes":
+                predict_naive_bayes(df)
+        
+            elif model_choice == "Random Forest":
+                predict_random_forest(df)
+        
+            elif model_choice == "XGBoost":
+                predict_xgboost(df)
+        
+            else:
+                raise ValueError(f"Unsupported model: {model_choice}")
+            
+        
+    else:
+        st.info("Please confirm to proceed.")
 
 
-def handle_uploaded_dataset(df, models, scaler):
-     st.success("inside def handle_uploaded_dataset(df, models, scaler): ")
+
 
 
 def handle_uploaded_dataset2(df, models, scaler):
