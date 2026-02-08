@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 
 st.set_page_config(page_title="Mobile Price Classification", layout="wide")
 
-st.title("📱 Mobile Price Classification – ML Models Demo")
+st.title("📱 Mobile Price Classification Models")
 
 
 DATA_PATH = Path("data/mobile_price_classification_test.csv")
@@ -51,12 +51,17 @@ source = st.radio(
 
 if source == "Predict using Built-in Test Dataset":
     df = load_local_csv(DATA_PATH)
+    
 else:
     # Upload dataset
     uploaded_file = st.file_uploader("Upload Test Dataset", type=["csv"])
     if uploaded_file:
         df = pd.read_csv(uploaded_file)
+        
+st.subheader("Dataset Preview")
+st.dataframe(df.head())
 
+return
 
 
 
@@ -75,8 +80,7 @@ scaler = joblib.load("model/standard_scaler.pkl")
 
 model_choice = st.selectbox("Select Model", list(models.keys()))
 
-st.subheader("Dataset Preview")
-st.dataframe(df.head())
+
 
 
 # Create a copy for feature engineering
