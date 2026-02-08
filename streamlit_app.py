@@ -26,7 +26,7 @@ def load_local_csv(path):
 
 if DATA_PATH.exists():
     df = load_local_csv(DATA_PATH)
-    st.success("Dataset loaded successfully from app folder!")
+    st.success("Built-in Test Dataset loaded successfully, having first 5 rows as:")
     st.dataframe(df.head())
 else:
     st.error("Dataset file not found in app folder.")
@@ -42,20 +42,21 @@ st.download_button(
 )
 
 
-st.subheader("Dataset Source")
+st.subheader("Make a Prediction for Mobile Price")
 
 source = st.radio(
-    "Choose dataset source:",
-    ["Predict using Built-in Test Dataset", "Upload Test Dataset"]
+    "Choose your test dataset source:",
+    ["Predict using Built-in Test Dataset", "Upload your New Test Dataset"]
 )
 
-if source == "Load Existing Automatically":
+if source == "Predict using Built-in Test Dataset":
 
     df = load_csv_from_github(GITHUB_CSV_URL)
 
 else:
+    
     # Upload dataset
-    uploaded_file = st.file_uploader("Upload CSV Dataset", type=["csv"])
+    uploaded_file = st.file_uploader("Upload your New Test Dataset", type=["csv"])
     if uploaded_file:
         df = pd.read_csv(uploaded_file)
 
