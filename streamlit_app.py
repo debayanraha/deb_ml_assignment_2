@@ -47,7 +47,7 @@ def predict_knn(df):
     model = joblib.load("model/knn_model.pkl")
     models["KNN"] = model
 
-    print(model)
+    st.success(model)
 
     return
 
@@ -61,7 +61,7 @@ def predict_naive_bayes(df):
     model = joblib.load("model/gaussian_nb_model.pkl")
     models["Gaussian Naive Bayes"] = model
 
-    print(model)
+    st.success(model)
 
     return
 
@@ -75,7 +75,7 @@ def predict_random_forest(df):
     model = joblib.load("model/random_forest_model.pkl")
     models["Random Forest"] = model
 
-    print(model)
+    st.success(model)
 
     return
 
@@ -88,7 +88,7 @@ def predict_xgboost(df):
     model = joblib.load("model/xgboost_model.pkl")
     models["XGBoost"] = model
 
-    print(model)
+    st.success(model)
 
     return
 
