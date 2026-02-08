@@ -193,7 +193,7 @@ if st.session_state.confirmed:
         elif model_choice == "KNN":
             predict_knn(df)
     
-        elif model_choice == "Naive Bayes":
+        elif model_choice == "Gaussian Naive Bayes":
             predict_naive_bayes(df)
     
         elif model_choice == "Random Forest":
