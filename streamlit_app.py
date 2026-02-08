@@ -17,12 +17,10 @@ import matplotlib.pyplot as plt
 
 def predict_logistic_regression(df):
 
-    st.success("Inside predict_logistic_regression")
-
     model = joblib.load("model/logistic_regression_model.pkl")
     models["Logistic Regression"] = model
 
-    st.success(model)
+    st.success("The Selected Model: "+ model)
 
     return
 
@@ -30,24 +28,20 @@ def predict_logistic_regression(df):
 def predict_decision_tree(df):
 
 
-    st.success("Inside predict_decision_tree")
-    
     model = joblib.load("model/decision_tree_model.pkl")
     models["Decision Tree"] = model
 
-    st.success(model)
+    st.success("The Selected Model: "+ model)
 
     return
 
 
 def predict_knn(df):
 
-    st.success("Inside predict_knn")
-    
     model = joblib.load("model/knn_model.pkl")
     models["KNN"] = model
 
-    st.success(model)
+    st.success("The Selected Model: "+ model)
 
     return
 
@@ -55,13 +49,10 @@ def predict_knn(df):
 
 def predict_naive_bayes(df):
 
-
-    st.success("Inside predict_naive_bayes")
-    
     model = joblib.load("model/gaussian_nb_model.pkl")
     models["Gaussian Naive Bayes"] = model
 
-    st.success(model)
+    st.success("The Selected Model: "+ model)
 
     return
 
@@ -69,26 +60,23 @@ def predict_naive_bayes(df):
     
 def predict_random_forest(df):
 
-
-    st.success("Inside predict_random_forest")
-    
     model = joblib.load("model/random_forest_model.pkl")
     models["Random Forest"] = model
 
-    st.success(model)
+    st.success("The Selected Model: "+ model)
 
     return
+
+
 
 
 def predict_xgboost(df):
 
 
-    st.success("Inside predict_xgboost")
-    
     model = joblib.load("model/xgboost_model.pkl")
     models["XGBoost"] = model
 
-    st.success(model)
+    st.success("The Selected Model: "+ model)
 
     return
 
