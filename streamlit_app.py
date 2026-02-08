@@ -22,7 +22,7 @@ def predict_logistic_regression(df):
     model = joblib.load("model/logistic_regression_model.pkl")
     models["Logistic Regression"] = model
 
-    st.success(model.summary())
+    st.success(model)
 
     return
 
@@ -35,7 +35,7 @@ def predict_decision_tree(df):
     model = joblib.load("model/decision_tree_model.pkl")
     models["Decision Tree"] = model
 
-   st.success(model.summary())
+   st.success(model)
 
     return
 
@@ -47,7 +47,7 @@ def predict_knn(df):
     model = joblib.load("model/knn_model.pkl")
     models["KNN"] = model
 
-    st.success(model.summary())
+    st.success(model)
 
     return
 
@@ -61,7 +61,7 @@ def predict_naive_bayes(df):
     model = joblib.load("model/gaussian_nb_model.pkl")
     models["Gaussian Naive Bayes"] = model
 
-    st.success(model.summary())
+    st.success(model)
 
     return
 
@@ -75,7 +75,7 @@ def predict_random_forest(df):
     model = joblib.load("model/random_forest_model.pkl")
     models["Random Forest"] = model
 
-    st.success(model.summary())
+    st.success(model)
 
     return
 
@@ -88,7 +88,7 @@ def predict_xgboost(df):
     model = joblib.load("model/xgboost_model.pkl")
     models["XGBoost"] = model
 
-    st.success(model.summary())
+    st.success(model)
 
     return
 
