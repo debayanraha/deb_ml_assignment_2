@@ -18,10 +18,11 @@ import matplotlib.pyplot as plt
 def predict_logistic_regression(df):
 
     st.success("Inside predict_logistic_regression")
-    
-    models["Logistic Regression"] = joblib.load("model/logistic_regression_model.pkl")
 
-    st.success(models["Logistic Regression"].summery)
+    model = joblib.load("model/logistic_regression_model.pkl")
+    models["Logistic Regression"] = model
+
+    st.success(model.summary())
 
     return
 
@@ -31,9 +32,10 @@ def predict_decision_tree(df):
 
     st.success("Inside predict_decision_tree")
     
-    models["Logistic Regression"] = joblib.load("model/decision_tree_model.pkl")
+    model = joblib.load("model/decision_tree_model.pkl")
+    models["Decision Tree"] = model
 
-    st.success(models["Logistic Regression"].summery)
+   st.success(model.summary())
 
     return
 
@@ -42,9 +44,10 @@ def predict_knn(df):
 
     st.success("Inside predict_knn")
     
-    models["Logistic Regression"] = joblib.load("model/knn_model.pkl")
+    model = joblib.load("model/knn_model.pkl")
+    models["KNN"] = model
 
-    st.success(models["Logistic Regression"].summery)
+    st.success(model.summary())
 
     return
 
@@ -55,9 +58,10 @@ def predict_naive_bayes(df):
 
     st.success("Inside predict_naive_bayes")
     
-    models["Logistic Regression"] = joblib.load("model/gaussian_nb_model.pkl")
+    model = joblib.load("model/gaussian_nb_model.pkl")
+    models["Gaussian Naive Bayes"] = model
 
-    st.success(models["Logistic Regression"].summery)
+    st.success(model.summary())
 
     return
 
@@ -68,9 +72,10 @@ def predict_random_forest(df):
 
     st.success("Inside predict_random_forest")
     
-    models["Logistic Regression"] = joblib.load("model/random_forest_model.pkl")
+    model = joblib.load("model/random_forest_model.pkl")
+    models["Random Forest"] = model
 
-    st.success(models["Logistic Regression"].summery)
+    st.success(model.summary())
 
     return
 
@@ -80,9 +85,10 @@ def predict_xgboost(df):
 
     st.success("Inside predict_xgboost")
     
-    models["Logistic Regression"] = joblib.load("model/xgboost_model.pkl")
+    model = joblib.load("model/xgboost_model.pkl")
+    models["XGBoost"] = model
 
-    st.success(models["Logistic Regression"].summery)
+    st.success(model.summary())
 
     return
 
