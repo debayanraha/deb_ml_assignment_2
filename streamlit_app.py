@@ -92,23 +92,25 @@ if st.session_state.confirmed:
     st.subheader("Select Machine Learning Model for Prediction")
     model_choice = st.selectbox(
         "Select Model",
-        options=list(models.keys()),
-        index=None,
-        placeholder="Select a model"
-        )
-    if model_choice is None:
+        options=["-- Select a model --"] + list(models.keys()),
+        index=0
+    )
+    if model_choice == "-- Select a model --":
         st.warning("Please select a model to continue.")
     else:
         st.success(f"Selected model: {model_choice}")
+        
         handle_uploaded_dataset(df, models, scaler)
     
 else:
     st.info("Please confirm to proceed.")
 
 
-
-
 def handle_uploaded_dataset(df, models, scaler):
+    print ("inside def handle_uploaded_dataset(df, models, scaler): ")
+
+
+def handle_uploaded_dataset2(df, models, scaler):
 
     # Create a copy for feature engineering
     df_engineered = df.copy()
