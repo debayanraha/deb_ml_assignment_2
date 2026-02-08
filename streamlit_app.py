@@ -46,17 +46,16 @@ st.subheader("Make a Prediction for Mobile Price")
 
 source = st.radio(
     "Choose your test dataset source:",
-    ["Upload your New Test Dataset", "Predict using Built-in Test Dataset"]
+    ["Predict using Built-in Test Dataset", "Upload your New Test Dataset"]
 )
 
-if source == "Upload your New Test Dataset":
+if source == "Predict using Built-in Test Dataset":
+    df = load_local_csv(DATA_PATH)    
+else:
     # Upload dataset
     uploaded_file = st.file_uploader("Upload Test Dataset", type=["csv"])
     if uploaded_file:
         df = pd.read_csv(uploaded_file)
-else:
-    df = load_local_csv(DATA_PATH)    
-
 
 st.subheader("Dataset Preview")
 st.dataframe(df.head())
