@@ -79,7 +79,7 @@ models = {
     "XGBoost": joblib.load("model/xgboost_model.pkl"),
 }
 
-# scaler = joblib.load("model/standard_scaler.pkl")
+scaler = joblib.load("model/standard_scaler.pkl")
 
 
 # Confirmation button
