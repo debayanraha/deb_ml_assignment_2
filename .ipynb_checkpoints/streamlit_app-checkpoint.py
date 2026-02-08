@@ -18,6 +18,12 @@ st.set_page_config(page_title="Mobile Price Classification", layout="wide")
 st.title("📱 Mobile Price Classification Models")
 
 
+
+# Initialize session state
+if "confirmed" not in st.session_state:
+    st.session_state.confirmed = False
+
+
 DATA_PATH = Path("data/mobile_price_classification_test.csv")
 
 @st.cache_data
@@ -76,15 +82,11 @@ models = {
 scaler = joblib.load("model/standard_scaler.pkl")
 
 
-
-# Initialize session state
-if "confirmed" not in st.session_state:
-    st.session_state.confirmed = False
-
 # Confirmation button
 if st.button("✅ Confirm dataset & proceed to model selection"):
     st.session_state.confirmed = True
 
+    
 # Show selectbox ONLY after confirmation
 if st.session_state.confirmed:
     st.subheader("Select Machine Learning Model for Prediction")
