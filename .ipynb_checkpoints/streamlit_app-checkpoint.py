@@ -19,6 +19,7 @@ def predict_logistic_regression(df):
 
     model = joblib.load("model/logistic_regression_model.pkl")
     models["Logistic Regression"] = model
+    scaler = joblib.load("model/standard_scaler.pkl")
 
     st.success(f"The Selected Model: {model}")
 
@@ -77,20 +78,14 @@ def predict_logistic_regression(df):
         print("\n✓ No duplicate rows found!")
     
     
-    X = df_engineered.drop('price_range', axis=1)
-    y = df_engineered['price_range']
+    # X = df_engineered.drop('price_range', axis=1)
+    # y = df_engineered['price_range']
+
+    X = df_engineered.copy()
     
     # Scaling logic
-    if model_choice in ["Logistic Regression", "KNN", "Naive Bayes"]:
-        # Fit on training data and transform both training and testing data
-        X_test_scaled = scaler.transform(X)
-    else:
-        X_test_scaled = X
+    X_test_scaled = scaler.transform(X)
     
-    
-    
-    
-    model = models[model_choice]
     
     y_pred = model.predict(X_test_scaled)
     y_proba = model.predict_proba(X_test_scaled)
@@ -117,9 +112,9 @@ def predict_logistic_regression(df):
     ax.set_ylabel("Actual")
     st.pyplot(fig)
     
-    # Classification Report
-    st.subheader("📄 Classification Report")
-    st.text(classification_report(y, y_pred))
+    # # Classification Report
+    # st.subheader("📄 Classification Report")
+    # st.text(classification_report(y, y_pred))
 
     
 
@@ -251,8 +246,6 @@ models = {
     "Random Forest": joblib.load("model/random_forest_model.pkl"),
     "XGBoost": joblib.load("model/xgboost_model.pkl"),
 }
-
-scaler = joblib.load("model/standard_scaler.pkl")
 
 
 # Confirmation button
