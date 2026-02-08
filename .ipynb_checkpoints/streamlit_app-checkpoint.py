@@ -58,7 +58,7 @@ else:
     df = load_local_csv(DATA_PATH)    
 
 
-select_model() 
+select_model()
 
 
 
