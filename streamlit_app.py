@@ -20,7 +20,7 @@ def predict_logistic_regression(df):
     model = joblib.load("model/logistic_regression_model.pkl")
     models["Logistic Regression"] = model
 
-    st.info(f"The Selected Model: {model}")
+    st.success(f"The Selected Model: {model}")
 
     return
 
@@ -31,7 +31,7 @@ def predict_decision_tree(df):
     model = joblib.load("model/decision_tree_model.pkl")
     models["Decision Tree"] = model
 
-    st.info(f"The Selected Model: {model}")
+    st.success(f"The Selected Model: {model}")
 
     return
 
@@ -41,7 +41,7 @@ def predict_knn(df):
     model = joblib.load("model/knn_model.pkl")
     models["KNN"] = model
 
-    st.info(f"The Selected Model: {model}")
+    st.success(f"The Selected Model: {model}")
 
     return
 
@@ -52,7 +52,7 @@ def predict_naive_bayes(df):
     model = joblib.load("model/gaussian_nb_model.pkl")
     models["Gaussian Naive Bayes"] = model
 
-    st.info(f"The Selected Model: {model}")
+    st.success(f"The Selected Model: {model}")
 
     return
 
@@ -63,7 +63,7 @@ def predict_random_forest(df):
     model = joblib.load("model/random_forest_model.pkl")
     models["Random Forest"] = model
 
-    st.info(f"The Selected Model: {model}")
+    st.success(f"The Selected Model: {model}")
 
     return
 
@@ -76,7 +76,7 @@ def predict_xgboost(df):
     model = joblib.load("model/xgboost_model.pkl")
     models["XGBoost"] = model
 
-    st.info(f"The Selected Model: {model}")
+    st.success(f"The Selected Model: {model}")
 
     return
 
@@ -170,8 +170,7 @@ if st.session_state.confirmed:
     if model_choice == "-- Select a model --":
         st.warning("Please select a model to continue.")
     else:
-        st.success(f"Selected model: {model_choice}")
-        
+        # st.success(f"Selected model: {model_choice}")
         if model_choice == "Logistic Regression":
             predict_logistic_regression(df)
             
