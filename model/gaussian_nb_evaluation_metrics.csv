@@ -1,0 +1,11 @@
+Metric,Score
+Accuracy,0.805
+AUC (Macro),0.9375666666666667
+AUC (Weighted),0.9375666666666667
+Precision (Macro),0.8086063752424048
+Precision (Weighted),0.8086063752424048
+Recall (Macro),0.805
+Recall (Weighted),0.805
+F1 Score (Macro),0.8066009782250735
+F1 Score (Weighted),0.8066009782250734
+MCC,0.7401233641752339

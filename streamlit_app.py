@@ -16,17 +16,60 @@ st.set_page_config(page_title="Mobile Price Classification", layout="wide")
 
 st.title("📱 Mobile Price Classification – ML Models Demo")
 
-# Upload dataset
-uploaded_file = st.file_uploader("Upload CSV Dataset", type=["csv"])
+
+DATA_PATH = Path("data/mobile_price_classification_test.csv")
+
+@st.cache_data
+def load_local_csv(path):
+    return pd.read_csv(path)
+
+if DATA_PATH.exists():
+    df = load_local_csv(DATA_PATH)
+    st.success("Dataset loaded successfully from app folder!")
+    st.dataframe(df.head())
+else:
+    st.error("Dataset file not found in app folder.")
+
+
+csv_bytes = df.to_csv(index=False).encode("utf-8")
+
+st.download_button(
+    label="⬇️ Download Built-in Test Dataset",
+    data=csv_bytes,
+    file_name="mobile_price_classification_test.csv",
+    mime="text/csv"
+)
+
+
+st.subheader("Dataset Source")
+
+source = st.radio(
+    "Choose dataset source:",
+    ["Predict using Built-in Test Dataset", "Upload Test Dataset"]
+)
+
+if source == "Load Existing Automatically":
+
+    df = load_csv_from_github(GITHUB_CSV_URL)
+
+else:
+    # Upload dataset
+    uploaded_file = st.file_uploader("Upload CSV Dataset", type=["csv"])
+    if uploaded_file:
+        df = pd.read_csv(uploaded_file)
+
+
+
+
 
 # Load models
 models = {
     "Logistic Regression": joblib.load("model/logistic_regression_model.pkl"),
     "Decision Tree": joblib.load("model/decision_tree_model.pkl"),
     "KNN": joblib.load("model/knn_model.pkl"),
-    # "Naive Bayes": joblib.load("model/naive_bayes.pkl"),
-    # "Random Forest": joblib.load("model/random_forest.pkl"),
-    # "XGBoost": joblib.load("model/xgboost.pkl"),
+    "Naive Bayes": joblib.load("model/naive_bayes.pkl"),
+    "Random Forest": joblib.load("model/random_forest.pkl"),
+    "XGBoost": joblib.load("model/xgboost.pkl"),
 }
 
 scaler = joblib.load("model/logistic_regression_standard_scaler.pkl")
