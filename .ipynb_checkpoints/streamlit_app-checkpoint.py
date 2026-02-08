@@ -58,6 +58,8 @@ else:
     df = load_local_csv(DATA_PATH)    
 
 
+st.subheader("Dataset Preview")
+st.dataframe(df.head())
 
 
 
