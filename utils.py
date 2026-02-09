@@ -119,8 +119,8 @@ def convert_notebook_to_html(model_name):
     notebook_path = os.path.join("model", notebook_map[model_name])
 
     # 1. Check if the file actually exists first
-    if not os.path.exists(nb_path):
-        return False, f"Notebook not found at {nb_path}"
+    if not os.path.exists(notebook_path):
+        return False, f"Notebook not found at {notebook_path}"
     
     # 1. Define the input path and expected output path
     html_output_path = notebook_path.replace(".ipynb", ".html")
