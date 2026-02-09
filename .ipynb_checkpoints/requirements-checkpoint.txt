@@ -18,6 +18,7 @@ seaborn
 # Jupyter for notebook execution
 nbconvert
 nbformat
+jinja2
 ipykernel
 
 # Utilities
@@ -28,3 +29,4 @@ scipy
 # For saving/loading models
 joblib
 #pickle
+
