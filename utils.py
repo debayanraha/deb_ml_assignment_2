@@ -79,6 +79,8 @@ def run_notebook(model_name):
     
 
 def run_notebook_to_html(model_name):
+
+    st.info(model_name)
     
     notebook_map = {
         "Logistic Regression": "Deb_ML_ASSN2_1_Logistic_Regression.ipynb",
@@ -89,6 +91,8 @@ def run_notebook_to_html(model_name):
         "XGBoost": "Deb_ML_ASSN2_6_Ensemble_XGBoost.ipynb",
     }
     nb_path = os.path.join("model", notebook_map[model_name])
+
+    st.info(nb_path)
     
     # 1. Check if the file actually exists first
     if not os.path.exists(nb_path):
@@ -99,7 +103,9 @@ def run_notebook_to_html(model_name):
         # 1. Load the notebook
         with open(nb_path, encoding='utf-8') as f:
             nb = nbformat.read(f, as_version=4)
-        
+
+
+        st.info(nb)
         
         # 1. Configure the exporter to include ALL outputs
         c = Config()
