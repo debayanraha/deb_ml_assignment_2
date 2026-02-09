@@ -68,8 +68,9 @@ if mode == "Train a Model":
             if success:
                 st.success(f"✅ {model_choice} trained and saved successfully!")
                 # Use an expander to show logs so they don't clutter the UI
-                with st.expander("Click to view full training logs & plots"):
-                    display_notebook_results(result)
+                with st.expander("Click to view full Training Logs, Visualizations & Metrics"):
+                    # display_notebook_results(result)
+                    components.html(html_content, height=800, scrolling=True)
             else:
                 st.error("❌ Training failed. Check notebook paths.")
                 st.info(result)
