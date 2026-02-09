@@ -65,21 +65,17 @@ if mode == "Train a Model":
     if model_choice:
         if st.button("🚀 Train Model"):
             with st.spinner("Training model..."):
-                success, html_content = run_notebook(model_choice)
+                success, result = run_notebook(model_choice)
             if success:
                 st.success(f"✅ {model_choice} trained and saved successfully!")
+                
                 # Use an expander to show logs so they don't clutter the UI
                 with st.expander("Click to view full Training Logs, Visualizations & Metrics"):
                     # display_notebook_results(result)
                     # components.html(html_content, height=800, scrolling=True)
 
-                    # Load the pre-converted HTML file
-                    with open("model/Deb_ML_ASSN2_1_Logistic_Regression.html", 'r', encoding='utf-8') as f:
-                        html_data = f.read()
-                    
-                    # Display using a scrollable component
-                    components.html(html_data, height=800, scrolling=True)
-
+                    convert_notebook_to_html(model_choice)
+                    display_notebook(model_choice)
 
                     
             else:

@@ -40,52 +40,23 @@ def run_notebook(model_name):
         "XGBoost": "Deb_ML_ASSN2_6_Ensemble_XGBoost.ipynb",
     }
 
-    # # notebook_path = MODEL_DIR / notebook_map[model_name]
-    # nb_path = os.path.join("model", notebook_map[model_name])
-    
-    # try:
-    #     with open(nb_path, encoding='utf-8') as f:
-    #         nb = nbformat.read(f, as_version=4)
-        
-    #     # This preprocessor executes the notebook and UPDATES the 'nb' object in place
-    #     ep = ExecutePreprocessor(timeout=600, kernel_name='python3')
-    #     ep.preprocess(nb, {'metadata': {'path': 'model/'}})
-        
-    #     return True, nb  # Return success and the notebook data
-    # except Exception as e:
-    #     return False, str(e)
-
-    
+    # notebook_path = MODEL_DIR / notebook_map[model_name]
     nb_path = os.path.join("model", notebook_map[model_name])
     
     try:
-        # 1. Load the notebook
         with open(nb_path, encoding='utf-8') as f:
             nb = nbformat.read(f, as_version=4)
-
-
-        # 1. Configure the exporter to include ALL outputs
-        c = Config()
-        c.HTMLExporter.preprocessors = [
-            'nbconvert.preprocessors.ExecutePreprocessor',
-        ]
         
-        # 2. Initialize with config
-        html_exporter = HTMLExporter(template_name='basic')
-        html_exporter.exclude_input = True # Show only results, not code
-
-
-        
-        # 2. Execute the notebook
+        # This preprocessor executes the notebook and UPDATES the 'nb' object in place
         ep = ExecutePreprocessor(timeout=600, kernel_name='python3')
         ep.preprocess(nb, {'metadata': {'path': 'model/'}})
         
-        # 3. Convert the executed notebook to HTML
-        (body, resources) = html_exporter.from_notebook_node(nb)
-        
-        return True, body
+        return True, nb  # Return success and the notebook data
     except Exception as e:
         return False, str(e)
+
+  
+
     
 
 def run_notebook_to_html(model_name):
@@ -111,13 +82,12 @@ def run_notebook_to_html(model_name):
             nb = nbformat.read(f, as_version=4)
 
         # 1. Configure the exporter to include ALL outputs
-        c = Config()
         c.HTMLExporter.preprocessors = [
             'nbconvert.preprocessors.ExecutePreprocessor',
         ]
         
         # 2. Initialize with config
-        html_exporter = HTMLExporter(config=c)
+        html_exporter = HTMLExporter(template_name='basic')
         html_exporter.exclude_input = True # Show only results, not code
         
         # 3. Re-run execution (ensure the notebook object is updated)
@@ -131,8 +101,76 @@ def run_notebook_to_html(model_name):
     except Exception as e:
         return False, str(e)
 
-    
 
+
+def convert_notebook_to_html(model_name):
+    """
+    Runs the terminal command: jupyter nbconvert --to html notebook.ipynb
+    """
+
+    notebook_map = {
+        "Logistic Regression": "Deb_ML_ASSN2_1_Logistic_Regression.ipynb",
+        "Decision Tree": "Deb_ML_ASSN2_2_Decision_Tree.ipynb",
+        "KNN": "Deb_ML_ASSN2_3_KNN.ipynb",
+        "Naive Bayes": "Deb_ML_ASSN2_4_Naive_Bayes.ipynb",
+        "Random Forest": "Deb_ML_ASSN2_5_Ensemble_Random_Forest.ipynb",
+        "XGBoost": "Deb_ML_ASSN2_6_Ensemble_XGBoost.ipynb",
+    }
+    notebook_path = os.path.join("model", notebook_map[model_name])
+
+    # 1. Check if the file actually exists first
+    if not os.path.exists(nb_path):
+        return False, f"Notebook not found at {nb_path}"
+    
+    # 1. Define the input path and expected output path
+    html_output_path = notebook_path.replace(".ipynb", ".html")
+    
+    try:
+        # 2. Execute the shell command
+        # --execute forces the notebook to run and generate plots before converting
+        subprocess.run([
+            "jupyter", "nbconvert", 
+            "--to", "html", 
+            "--execute", 
+            "--no-input", # Optional: hides the code cells
+            notebook_path
+        ], check=True)
+        
+        # 3. Read the generated HTML file
+        with open(html_output_path, "r", encoding="utf-8") as f:
+            html_content = f.read()
+            
+        return html_content
+    
+    except subprocess.CalledProcessError as e:
+        return f"Error during conversion: {e}"
+    except FileNotFoundError:
+        return "Error: HTML file was not generated. Check notebook execution."
+
+
+
+def display_notebook(model_name):
+
+    notebook_map = {
+        "Logistic Regression": "Deb_ML_ASSN2_1_Logistic_Regression.html",
+        "Decision Tree": "Deb_ML_ASSN2_2_Decision_Tree.html",
+        "KNN": "Deb_ML_ASSN2_3_KNN.html",
+        "Naive Bayes": "Deb_ML_ASSN2_4_Naive_Bayes.html",
+        "Random Forest": "Deb_ML_ASSN2_5_Ensemble_Random_Forest.html",
+        "XGBoost": "Deb_ML_ASSN2_6_Ensemble_XGBoost.html",
+    }
+    notebook_path = os.path.join("model", notebook_map[model_name])
+    
+    # Load the pre-converted HTML file
+    with open(notebook_path, 'r', encoding='utf-8') as f:
+        html_data = f.read()
+    
+    # Display using a scrollable component
+    components.html(html_data, height=800, scrolling=True)
+
+
+
+    
 
 # Helper function to display notebook outputs
 def display_notebook_results(nb):
