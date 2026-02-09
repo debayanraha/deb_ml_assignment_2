@@ -79,6 +79,7 @@ def run_notebook(model_name):
     
 
 def run_notebook_to_html(model_name):
+    
     notebook_map = {
         "Logistic Regression": "Deb_ML_ASSN2_1_Logistic_Regression.ipynb",
         "Decision Tree": "Deb_ML_ASSN2_2_Decision_Tree.ipynb",
@@ -88,6 +89,10 @@ def run_notebook_to_html(model_name):
         "XGBoost": "Deb_ML_ASSN2_6_Ensemble_XGBoost.ipynb",
     }
     nb_path = os.path.join("model", notebook_map[model_name])
+    
+    # 1. Check if the file actually exists first
+    if not os.path.exists(nb_path):
+        return False, f"Notebook not found at {nb_path}"
     
     try:
 
