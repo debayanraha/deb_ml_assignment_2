@@ -11,7 +11,7 @@ from sklearn.metrics import (
 )
 import seaborn as sns
 import matplotlib.pyplot as plt
-from utils import run_notebook, get_model_path, train_model, predict, display_notebook_results, run_notebook_to_html
+from utils import run_notebook, get_model_path, train_model, predict, display_notebook_results, run_notebook_to_html, convert_notebook_to_html, display_notebook
 
 
 st.set_page_config(page_title="Mobile Price Classification", layout="wide")
