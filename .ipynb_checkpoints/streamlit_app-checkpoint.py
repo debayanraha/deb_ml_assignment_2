@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import joblib
 from pathlib import Path
-from utils import train_model, predict
+from utils import train_model, predict, run_notebook
 
 
 from sklearn.metrics import (
@@ -41,6 +41,8 @@ mode = st.radio(
     index=None
 )
 
+st.markdown("---")
+
 models = [
     "Logistic Regression",
     "Decision Tree",
@@ -55,6 +57,7 @@ models = [
 # --------------------------------------------------
 if mode == "Train a Model":
 
+    st.header("Training a Model...")
     st.subheader("Train a Machine Learning Model")
 
     model_choice = st.selectbox(
@@ -67,7 +70,7 @@ if mode == "Train a Model":
     if model_choice:
         if st.button("🚀 Train Model"):
             with st.spinner("Training model..."):
-                train_model(model_choice)
+                run_notebook(model_choice)
             st.success(f"{model_choice} trained and saved successfully!")
 
 # --------------------------------------------------

@@ -2,10 +2,62 @@ import subprocess
 import joblib
 import pandas as pd
 from pathlib import Path
-
+import nbformat
+from nbconvert.preprocessors import ExecutePreprocessor
+import os
 
 MODEL_DIR = Path("model")
 DATA_DIR = Path("data")
+
+
+
+def get_model_path(model_name):
+    name_map = {
+        "Logistic Regression": "logistic_regression.joblib",
+        "Decision Tree": "decision_tree.joblib",
+        "KNN": "knn.joblib",
+        "Naive Bayes": "naive_bayes.joblib",
+        "Random Forest": "random_forest.joblib",
+        "XGBoost": "xgboost.joblib"
+    }
+    return os.path.join("model", "saved_models", name_map[model_name])
+
+
+
+
+def run_notebook(model_name):
+    notebook_map = {
+        "Logistic Regression": "Deb_ML_ASSN2_1_Logistic_Regression.ipynb",
+        "Decision Tree": "Deb_ML_ASSN2_2_Decision_Tree.ipynb",
+        "KNN": "Deb_ML_ASSN2_3_KNN.ipynb",
+        "Naive Bayes": "Deb_ML_ASSN2_4_Naive_Bayes.ipynb",
+        "Random Forest": "Deb_ML_ASSN2_5_Ensemble_Random_Forest.ipynb",
+        "XGBoost": "Deb_ML_ASSN2_6_Ensemble_XGBoost.ipynb",
+    }
+
+    # notebook_path = MODEL_DIR / notebook_map[model_name]
+    nb_path = os.path.join("model", notebook_map[model_name])
+    
+    try:
+        with open(nb_path) as f:
+            nb = nbformat.read(f, as_version=4)
+        
+        ep = ExecutePreprocessor(timeout=600, kernel_name='python3')
+        ep.preprocess(nb, {'metadata': {'path': 'model/'}})
+        return True
+    except Exception as e:
+        print(f"Error executing notebook: {e}")
+        return False
+
+
+
+
+
+
+
+
+
+
 
 
 # --------------------------------------------------
@@ -22,7 +74,7 @@ def train_model(model_name):
         "XGBoost": "Deb_ML_ASSN2_6_Ensemble_XGBoost.ipynb",
     }
 
-    notebook_path = MODEL_DIR / notebook_map[model_name]
+     notebook_path = MODEL_DIR / notebook_map[model_name]
 
     subprocess.run(
         [
