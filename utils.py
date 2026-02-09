@@ -79,8 +79,23 @@ def run_notebook(model_name):
     
 
 def run_notebook_to_html(model_name):
-    # ... (previous path logic) ...
+    notebook_map = {
+        "Logistic Regression": "Deb_ML_ASSN2_1_Logistic_Regression.ipynb",
+        "Decision Tree": "Deb_ML_ASSN2_2_Decision_Tree.ipynb",
+        "KNN": "Deb_ML_ASSN2_3_KNN.ipynb",
+        "Naive Bayes": "Deb_ML_ASSN2_4_Naive_Bayes.ipynb",
+        "Random Forest": "Deb_ML_ASSN2_5_Ensemble_Random_Forest.ipynb",
+        "XGBoost": "Deb_ML_ASSN2_6_Ensemble_XGBoost.ipynb",
+    }
+    nb_path = os.path.join("model", notebook_map[model_name])
+    
     try:
+
+        # 1. Load the notebook
+        with open(nb_path, encoding='utf-8') as f:
+            nb = nbformat.read(f, as_version=4)
+        
+        
         # 1. Configure the exporter to include ALL outputs
         c = Config()
         c.HTMLExporter.preprocessors = [
