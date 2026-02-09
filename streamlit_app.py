@@ -23,7 +23,7 @@ st.title("📱 Machine Learning Model with Mobile Price Classification Dataset")
 # Page refresh button at top
 col1, col2, col3 = st.columns([1, 1, 1])
 with col2:
-    if st.button("🔄 Reset/Refresh Page", type="primary"):
+    if st.button("🔄 Reset/Refresh App"):
         st.rerun()
 
 st.markdown("---")
