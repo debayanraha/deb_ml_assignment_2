@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import joblib
 from pathlib import Path
-from utils import train_model, predict, run_notebook
+from utils import train_model, predict, run_notebook, get_model_path
 
 
 from sklearn.metrics import (

@@ -10,7 +10,6 @@ MODEL_DIR = Path("model")
 DATA_DIR = Path("data")
 
 
-
 def get_model_path(model_name):
     name_map = {
         "Logistic Regression": "logistic_regression.joblib",
@@ -48,12 +47,6 @@ def run_notebook(model_name):
     except Exception as e:
         print(f"Error executing notebook: {e}")
         return False
-
-
-
-
-
-
 
 
 
