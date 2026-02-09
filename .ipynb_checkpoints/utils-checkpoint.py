@@ -71,7 +71,7 @@ def run_notebook(model_name):
         ]
         
         # 2. Initialize with config
-        html_exporter = HTMLExporter(config=c)
+        html_exporter = HTMLExporter()
         html_exporter.exclude_input = True # Show only results, not code
 
 
