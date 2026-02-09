@@ -62,15 +62,25 @@ def run_notebook(model_name):
         # 1. Load the notebook
         with open(nb_path, encoding='utf-8') as f:
             nb = nbformat.read(f, as_version=4)
+
+
+        # 1. Configure the exporter to include ALL outputs
+        c = Config()
+        c.HTMLExporter.preprocessors = [
+            'nbconvert.preprocessors.ExecutePreprocessor',
+        ]
+        
+        # 2. Initialize with config
+        html_exporter = HTMLExporter(config=c)
+        html_exporter.exclude_input = True # Show only results, not code
+
+
         
         # 2. Execute the notebook
         ep = ExecutePreprocessor(timeout=600, kernel_name='python3')
         ep.preprocess(nb, {'metadata': {'path': 'model/'}})
         
         # 3. Convert the executed notebook to HTML
-        html_exporter = HTMLExporter()
-        # This "exclude_input" removes the code cells, showing only the outputs/plots
-        html_exporter.exclude_input = True 
         (body, resources) = html_exporter.from_notebook_node(nb)
         
         return True, body
@@ -80,8 +90,6 @@ def run_notebook(model_name):
 
 def run_notebook_to_html(model_name):
 
-    st.info(model_name)
-    
     notebook_map = {
         "Logistic Regression": "Deb_ML_ASSN2_1_Logistic_Regression.ipynb",
         "Decision Tree": "Deb_ML_ASSN2_2_Decision_Tree.ipynb",
@@ -92,8 +100,6 @@ def run_notebook_to_html(model_name):
     }
     nb_path = os.path.join("model", notebook_map[model_name])
 
-    st.info(nb_path)
-    
     # 1. Check if the file actually exists first
     if not os.path.exists(nb_path):
         return False, f"Notebook not found at {nb_path}"
@@ -104,9 +110,6 @@ def run_notebook_to_html(model_name):
         with open(nb_path, encoding='utf-8') as f:
             nb = nbformat.read(f, as_version=4)
 
-
-        st.info(nb)
-        
         # 1. Configure the exporter to include ALL outputs
         c = Config()
         c.HTMLExporter.preprocessors = [
