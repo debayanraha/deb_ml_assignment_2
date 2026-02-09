@@ -5,6 +5,9 @@ from pathlib import Path
 import nbformat
 from nbconvert.preprocessors import ExecutePreprocessor
 import os
+import base64
+from PIL import Image
+import io
 
 MODEL_DIR = Path("model")
 DATA_DIR = Path("data")
@@ -38,17 +41,43 @@ def run_notebook(model_name):
     nb_path = os.path.join("model", notebook_map[model_name])
     
     try:
-        with open(nb_path) as f:
+        with open(nb_path, encoding='utf-8') as f:
             nb = nbformat.read(f, as_version=4)
         
+        # This preprocessor executes the notebook and UPDATES the 'nb' object in place
         ep = ExecutePreprocessor(timeout=600, kernel_name='python3')
         ep.preprocess(nb, {'metadata': {'path': 'model/'}})
-        return True
+        
+        return True, nb  # Return success and the notebook data
     except Exception as e:
-        print(f"Error executing notebook: {e}")
-        return False
+        return False, str(e)
 
 
+
+
+# Helper function to display notebook outputs
+def display_notebook_results(nb):
+    st.info("### 📋 Notebook Execution Logs")
+    for cell in nb.cells:
+        if cell.cell_type == 'code':
+            for output in cell.get('outputs', []):
+                # 1. Handle standard print() or logs
+                if output.output_type == 'stream':
+                    st.text(output.text)
+                
+                # 2. Handle Plots (Matplotlib/Seaborn) or Display results
+                elif output.output_type in ['display_data', 'execute_result']:
+                    data = output.get('data', {})
+                    if 'image/png' in data:
+                        image_data = base64.b64decode(data['image/png'])
+                        st.image(io.BytesIO(image_data))
+                    elif 'text/plain' in data:
+                        st.write(data['text/plain'])
+                
+                # 3. Handle Errors
+                elif output.output_type == 'error':
+                    st.error(f"Error: {output.ename}")
+                    st.code("\n".join(output.traceback))
 
 
 

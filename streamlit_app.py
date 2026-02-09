@@ -10,14 +10,10 @@ from sklearn.metrics import (
 )
 import seaborn as sns
 import matplotlib.pyplot as plt
-from utils import run_notebook, get_model_path, train_model, predict
-
+from utils import run_notebook, get_model_path, train_model, predict, display_notebook_results
 
 
 st.set_page_config(page_title="Mobile Price Classification", layout="wide")
-
-
-
 
 
 # Page refresh button at top
@@ -68,8 +64,14 @@ if mode == "Train a Model":
     if model_choice:
         if st.button("🚀 Train Model"):
             with st.spinner("Training model..."):
-                run_notebook(model_choice)
-            st.success(f"{model_choice} trained and saved successfully!")
+                success = run_notebook(model_choice)
+            if success:
+                st.success(f"✅ {model_choice} trained and saved successfully!")
+                # Use an expander to show logs so they don't clutter the UI
+                with st.expander("Click to view full training logs & plots"):
+                    display_notebook_results(result)
+            else:
+                st.error("❌ Training failed. Check notebook paths.")
 
 # --------------------------------------------------
 # PREDICT MODE
