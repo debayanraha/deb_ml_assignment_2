@@ -74,7 +74,7 @@ if mode == "Train a Model":
                     components.html(html_content, height=800, scrolling=True)
             else:
                 st.error("❌ Training failed. Check notebook paths.")
-                st.info(result)
+                st.info(html_content)
 
 # --------------------------------------------------
 # PREDICT MODE
