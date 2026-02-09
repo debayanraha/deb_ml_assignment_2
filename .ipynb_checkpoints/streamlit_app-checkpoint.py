@@ -17,13 +17,14 @@ import matplotlib.pyplot as plt
 st.set_page_config(page_title="Mobile Price Classification", layout="wide")
 
 
-st.title("📱 Machine Learning Model with Mobile Price Classification Dataset")
+
 
 
 # Page refresh button at top
 col1, col2, col3 = st.columns([1, 1, 1])
 with col2:
-    if st.button("🔄 Reset/Refresh App"):
+    st.title("📱 Machine Learning Models (Mobile Price Classification)")
+    if st.button("🔄 Reset/Refresh App", type="primary"):
         st.rerun()
 
 st.markdown("---")
