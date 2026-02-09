@@ -59,26 +59,45 @@ def run_notebook(model_name):
 # Helper function to display notebook outputs
 def display_notebook_results(nb):
     st.info("### 📋 Notebook Execution Logs")
+    
     for cell in nb.cells:
         if cell.cell_type == 'code':
             for output in cell.get('outputs', []):
-                # 1. Handle standard print() or logs
+                # 1. Handle standard text/logs
                 if output.output_type == 'stream':
                     st.text(output.text)
                 
-                # 2. Handle Plots (Matplotlib/Seaborn) or Display results
+                # 2. Handle Plots & Figures (The critical fix)
                 elif output.output_type in ['display_data', 'execute_result']:
                     data = output.get('data', {})
+                    
+                    # Try PNG first (most common for Matplotlib/Seaborn)
                     if 'image/png' in data:
-                        image_data = base64.b64decode(data['image/png'])
-                        st.image(io.BytesIO(image_data))
+                        img_data = base64.b64decode(data['image/png'])
+                        st.image(img_data, use_container_width=True)
+                    
+                    # Try JPEG
+                    elif 'image/jpeg' in data:
+                        img_data = base64.b64decode(data['image/jpeg'])
+                        st.image(img_data, use_container_width=True)
+                    
+                    # Try SVG (Vector graphics)
+                    elif 'image/svg+xml' in data:
+                        st.write("*(SVG Plot)*")
+                        st.components.v1.html(data['image/svg+xml'], scrolling=True)
+
+                    # Handle HTML (Pandas tables or interactive plots)
+                    elif 'text/html' in data:
+                        st.components.v1.html(data['text/html'], height=300, scrolling=True)
+                    
+                    # Fallback for plain text results (like "Accuracy: 0.95")
                     elif 'text/plain' in data:
                         st.write(data['text/plain'])
-                
-                # 3. Handle Errors
+
+                # 3. Handle Errors with full traceback
                 elif output.output_type == 'error':
-                    st.error(f"Error: {output.ename}")
-                    st.code("\n".join(output.traceback))
+                    st.error(f"Execution Error: {output.ename}")
+                    st.exception(Exception(output.evalue))
 
 
 
