@@ -26,6 +26,7 @@ with col1:
 st.markdown("---")
 
 st.title("📱 Machine Learning Models (Mobile Price Classification)")
+st.warning("Dear Sir/Madam, If the App fails, that might be envirnmental issue! Please Call/WhatsApp me at +91-9177762671. - Regards, Debayan.")
 
 # --------------------------------------------------
 # MODE SELECTION
@@ -52,11 +53,10 @@ models = [
 # --------------------------------------------------
 if mode == "Train a Model":
 
-    st.header("Training a Model...")
-    st.subheader("Train a Machine Learning Model")
+    st.header("Train Your Selected Machine Learning Model...")
 
     model_choice = st.selectbox(
-        "Select a Model to Train",
+        "Select Your Model to Train",
         models,
         index=None,
         placeholder="Select a model"
@@ -64,7 +64,7 @@ if mode == "Train a Model":
 
     if model_choice:
         if st.button("🚀 Train Model"):
-            with st.spinner("Training model..."):
+            with st.spinner("Training your model! Please wait for approx. 59 Seconds..."):
                 success, result = run_notebook(model_choice)
             if success:
                 st.success(f"✅ {model_choice} trained and saved successfully!")
@@ -74,7 +74,7 @@ if mode == "Train a Model":
                     # display_notebook_results(result)
                     # components.html(html_content, height=800, scrolling=True)
 
-                    nb_html = convert_notebook_to_html(model_choice)
+                    # nb_html = convert_notebook_to_html(model_choice)
 
                     # Display using a scrollable component
                     # components.html(nb_html, height=800, scrolling=True)
