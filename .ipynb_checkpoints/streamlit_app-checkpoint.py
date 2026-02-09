@@ -71,7 +71,17 @@ if mode == "Train a Model":
                 # Use an expander to show logs so they don't clutter the UI
                 with st.expander("Click to view full Training Logs, Visualizations & Metrics"):
                     # display_notebook_results(result)
-                    components.html(html_content, height=800, scrolling=True)
+                    # components.html(html_content, height=800, scrolling=True)
+
+                    # Load the pre-converted HTML file
+                    with open("model/Deb_ML_ASSN2_1_Logistic_Regression.html", 'r', encoding='utf-8') as f:
+                        html_data = f.read()
+                    
+                    # Display using a scrollable component
+                    components.html(html_data, height=800, scrolling=True)
+
+
+                    
             else:
                 st.error("❌ Training failed. Check notebook paths.")
                 st.info(html_content)
