@@ -65,21 +65,28 @@ if mode == "Train a Model":
     if model_choice:
         if st.button("🚀 Train Model"):
             with st.spinner("Training your model! Please wait for approx. 59 Seconds..."):
-                success, result = run_notebook(model_choice)
+                success, html_content = run_notebook_to_html(model_choice)
             if success:
                 st.success(f"✅ {model_choice} trained and saved successfully!")
-                
+
                 # Use an expander to show logs so they don't clutter the UI
-                with st.expander("Click to view full Training Logs, Visualizations & Metrics"):
+                with st.expander("Click here to view Current Training Logs & Metrics (without Visualizations)"):
+                    # display_notebook_results(result)
+                    components.html(html_content, height=800, scrolling=True)
+
+                    
+                # Use an expander to show logs so they don't clutter the UI
+                with st.expander("Click here to view Pre-Training Logs and Metrics with Visualizations & Plots"):
                     # display_notebook_results(result)
                     # components.html(html_content, height=800, scrolling=True)
 
                     # nb_html = convert_notebook_to_html(model_choice)
-
-                    # Display using a scrollable component
                     # components.html(nb_html, height=800, scrolling=True)
+                    
+                    # Display using a scrollable component
                     display_notebook(model_choice)
 
+            
                     
             else:
                 st.error("❌ Training failed. Check notebook paths.")
