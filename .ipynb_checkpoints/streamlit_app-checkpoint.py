@@ -37,7 +37,8 @@ st.title("📱 Machine Learning Models (Mobile Price Classification)")
 # --------------------------------------------------
 mode = st.radio(
     "Choose Action",
-    ["Train a Model", "Predict a Model"]
+    ["Train a Model", "Predict a Model"],
+    index=None
 )
 
 models = [
