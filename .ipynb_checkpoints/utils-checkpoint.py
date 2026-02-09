@@ -160,6 +160,9 @@ def display_notebook(model_name):
         "XGBoost": "Deb_ML_ASSN2_6_Ensemble_XGBoost.html",
     }
     notebook_path = os.path.join("model", notebook_map[model_name])
+    # 1. Check if the file actually exists first
+    if not os.path.exists(notebook_path):
+        return False, f"Notebook not found at {notebook_path}"
     
     # Load the pre-converted HTML file
     with open(notebook_path, 'r', encoding='utf-8') as f:
