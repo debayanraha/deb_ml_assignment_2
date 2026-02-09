@@ -72,6 +72,7 @@ if mode == "Train a Model":
                     display_notebook_results(result)
             else:
                 st.error("❌ Training failed. Check notebook paths.")
+                st.info(result)
 
 # --------------------------------------------------
 # PREDICT MODE

@@ -41,7 +41,7 @@ def run_notebook(model_name):
     nb_path = os.path.join("model", notebook_map[model_name])
     
     try:
-        with open(nb_path) as f:
+        with open(nb_path, encoding='utf-8') as f:
             nb = nbformat.read(f, as_version=4)
         
         # This preprocessor executes the notebook and UPDATES the 'nb' object in place
