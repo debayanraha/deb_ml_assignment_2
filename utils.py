@@ -82,11 +82,6 @@ def run_notebook_to_html(model_name):
         with open(nb_path, encoding='utf-8') as f:
             nb = nbformat.read(f, as_version=4)
 
-        # 1. Configure the exporter to include ALL outputs
-        c.HTMLExporter.preprocessors = [
-            'nbconvert.preprocessors.ExecutePreprocessor',
-        ]
-        
         # 2. Initialize with config
         html_exporter = HTMLExporter(template_name='basic')
         html_exporter.exclude_input = True # Show only results, not code
