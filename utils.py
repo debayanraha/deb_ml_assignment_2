@@ -5,6 +5,7 @@ import pandas as pd
 from pathlib import Path
 import nbformat
 from nbconvert.preprocessors import ExecutePreprocessor
+from nbconvert import HTMLExporter
 import os
 import base64
 from PIL import Image

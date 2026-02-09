@@ -5,6 +5,7 @@ import pandas as pd
 from pathlib import Path
 import nbformat
 from nbconvert.preprocessors import ExecutePreprocessor
+from nbconvert import HTMLExporter
 import os
 import base64
 from PIL import Image
@@ -38,21 +39,43 @@ def run_notebook(model_name):
         "XGBoost": "Deb_ML_ASSN2_6_Ensemble_XGBoost.ipynb",
     }
 
-    # notebook_path = MODEL_DIR / notebook_map[model_name]
+    # # notebook_path = MODEL_DIR / notebook_map[model_name]
+    # nb_path = os.path.join("model", notebook_map[model_name])
+    
+    # try:
+    #     with open(nb_path, encoding='utf-8') as f:
+    #         nb = nbformat.read(f, as_version=4)
+        
+    #     # This preprocessor executes the notebook and UPDATES the 'nb' object in place
+    #     ep = ExecutePreprocessor(timeout=600, kernel_name='python3')
+    #     ep.preprocess(nb, {'metadata': {'path': 'model/'}})
+        
+    #     return True, nb  # Return success and the notebook data
+    # except Exception as e:
+    #     return False, str(e)
+
+    
     nb_path = os.path.join("model", notebook_map[model_name])
     
     try:
+        # 1. Load the notebook
         with open(nb_path, encoding='utf-8') as f:
             nb = nbformat.read(f, as_version=4)
         
-        # This preprocessor executes the notebook and UPDATES the 'nb' object in place
+        # 2. Execute the notebook
         ep = ExecutePreprocessor(timeout=600, kernel_name='python3')
         ep.preprocess(nb, {'metadata': {'path': 'model/'}})
         
-        return True, nb  # Return success and the notebook data
+        # 3. Convert the executed notebook to HTML
+        html_exporter = HTMLExporter()
+        # This "exclude_input" removes the code cells, showing only the outputs/plots
+        html_exporter.exclude_input = True 
+        (body, resources) = html_exporter.from_notebook_node(nb)
+        
+        return True, body
     except Exception as e:
         return False, str(e)
-
+    
 
 
 
