@@ -1,8 +1,29 @@
+# Streamlit
 streamlit
+
+# Core Data Science Libraries
 pandas
 numpy
 scikit-learn==1.7.2
+
+# Machine Learning Models
+xgboost
+
+# Visualization
 matplotlib
 seaborn
-xgboost
+
+
+# Jupyter for notebook execution
+nbconvert
+nbformat
+ipykernel
+
+# Utilities
+Pillow
+plotly
+scipy
+
+# For saving/loading models
 joblib
+pickle5
