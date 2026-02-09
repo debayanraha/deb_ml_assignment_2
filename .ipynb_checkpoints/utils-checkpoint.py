@@ -6,6 +6,7 @@ from pathlib import Path
 import nbformat
 from nbconvert.preprocessors import ExecutePreprocessor
 from nbconvert import HTMLExporter
+from traitlets.config import Config
 import os
 import base64
 from PIL import Image
@@ -77,6 +78,31 @@ def run_notebook(model_name):
         return False, str(e)
     
 
+def run_notebook_to_html(model_name):
+    # ... (previous path logic) ...
+    try:
+        # 1. Configure the exporter to include ALL outputs
+        c = Config()
+        c.HTMLExporter.preprocessors = [
+            'nbconvert.preprocessors.ExecutePreprocessor',
+        ]
+        
+        # 2. Initialize with config
+        html_exporter = HTMLExporter(config=c)
+        html_exporter.exclude_input = True # Show only results, not code
+        
+        # 3. Re-run execution (ensure the notebook object is updated)
+        ep = ExecutePreprocessor(timeout=600, kernel_name='python3')
+        ep.preprocess(nb, {'metadata': {'path': 'model/'}})
+        
+        # 4. Export
+        (body, resources) = html_exporter.from_notebook_node(nb)
+        return True, body
+        
+    except Exception as e:
+        return False, str(e)
+
+    
 
 
 # Helper function to display notebook outputs

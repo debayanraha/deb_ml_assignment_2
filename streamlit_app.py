@@ -65,7 +65,7 @@ if mode == "Train a Model":
     if model_choice:
         if st.button("🚀 Train Model"):
             with st.spinner("Training model..."):
-                success, html_content = run_notebook(model_choice)
+                success, html_content = run_notebook_to_html(model_choice)
             if success:
                 st.success(f"✅ {model_choice} trained and saved successfully!")
                 # Use an expander to show logs so they don't clutter the UI
