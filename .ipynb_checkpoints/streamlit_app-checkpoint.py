@@ -74,7 +74,7 @@ if mode == "Train a Model":
                     # display_notebook_results(result)
                     # components.html(html_content, height=800, scrolling=True)
 
-                    # nb_html = convert_notebook_to_html(model_choice)
+                    nb_html = convert_notebook_to_html(model_choice)
 
                     # Display using a scrollable component
                     # components.html(nb_html, height=800, scrolling=True)
