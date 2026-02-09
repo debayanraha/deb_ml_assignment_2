@@ -67,7 +67,7 @@ def train_model(model_name):
         "XGBoost": "Deb_ML_ASSN2_6_Ensemble_XGBoost.ipynb",
     }
 
-     notebook_path = MODEL_DIR / notebook_map[model_name]
+    notebook_path = MODEL_DIR / notebook_map[model_name]
 
     subprocess.run(
         [
