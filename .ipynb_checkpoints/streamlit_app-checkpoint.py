@@ -319,6 +319,7 @@ elif mode == "View Classification Report":
             with open(CLSSN_PATH, "r") as f:
                 report_txt = f.read()
             st.text(report_txt)
+            st.code(report_txt, language="text")
         else:
             st.error("Classification Report file not found in app folder.")
     
