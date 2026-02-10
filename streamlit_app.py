@@ -44,7 +44,7 @@ st.warning("Dear Sir/Madam, If the App fails, that might be envirnmental issue! 
 # --------------------------------------------------
 mode = st.radio(
     "Choose Action",
-    ["Train a Model", "Predict a Model", "Show Evaluation Metrics"],
+    ["Train a Model", "Predict a Model", "View Evaluation Metrics"],
     index=None,
     key="action_mode"
 )
