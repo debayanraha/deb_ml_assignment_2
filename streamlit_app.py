@@ -186,29 +186,8 @@ elif mode == "Predict a Model":
                 with st.spinner("Running prediction..."):
 
                     df = df.drop(['id', 'price_range'], axis=1, errors='ignore')
+                    outdf = predict_model(model_choice, models[model_choice], df)
                     
-                    # st.success(f"Selected model: {model_choice}")
-                    if model_choice == "Logistic Regression":
-                        outdf = predict_model(model_choice, models[model_choice], df)
-                        
-                    elif model_choice == "Decision Tree":
-                        outdf = predict_decision_tree(df)
-                
-                    elif model_choice == "KNN":
-                        outdf = predict_knn(df)
-                
-                    elif model_choice == "Gaussian Naive Bayes":
-                        outdf = predict_naive_bayes(df)
-                
-                    elif model_choice == "Random Forest":
-                        outdf = predict_random_forest(df)
-                
-                    elif model_choice == "XGBoost":
-                        outdf = predict_xgboost(df)
-                
-                    else:
-                        raise ValueError(f"Unsupported model: {model_choice}")
-
                     st.success("Prediction completed!")
                     outdf.to_csv(TEST_OUT_DATA_PATH, index=False)
                     st.dataframe(outdf.head())
