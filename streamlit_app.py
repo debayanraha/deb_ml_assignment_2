@@ -44,7 +44,12 @@ st.warning("Dear Sir/Madam, If the App fails, that might be envirnmental issue! 
 # --------------------------------------------------
 mode = st.radio(
     "Choose Action",
-    ["Train a Model", "Predict a Model", "View Evaluation Metrics"],
+    ["Train a Model", 
+     "Predict a Model", 
+     "View Evaluation Metrics",
+     "View Confusion Matrix",
+     "View Classification Report"
+    ],
     index=None,
     key="action_mode"
 )
@@ -240,4 +245,78 @@ elif mode == "View Evaluation Metrics":
             st.dataframe(df)
         else:
             st.error("evaluation_metric file not found in app folder.")
+
+
+# --------------------------------------------------
+# View Confusion Matrix
+# --------------------------------------------------
+elif mode == "View Confusion Matrix":
+
+    st.header("Confusion Matrix of Models...")
+
+    confusion_matrix= {
+        "Logistic Regression": "model/logistic_regression_confusion_matrix.csv",
+        "Decision Tree": "model/decision_tree_confusion_matrix.csv",
+        "KNN": "model/knn_confusion_matrix.csv",
+        "Naive Bayes": "model/gaussian_nb_confusion_matrix.csv",
+        "Random Forest": "model/random_forest_confusion_matrix.csv",
+        "XGBoost": "model/xgboost_confusion_matrix.csv",
+    }
+    
+
+    model_choice = st.selectbox(
+        "Select Model to view Confusion Matrix",
+        models,
+        index=None,
+        placeholder="Select a model"
+    )
+
+    if model_choice:
+
+        CONFN_PATH = Path(confusion_matrix[model_choice])
+    
+        @st.cache_data
+        def load_local_csv(path):
+            return pd.read_csv(path)
+        
+        if CONFN_PATH.exists():
+            df = load_local_csv(CONFN_PATH)
+            st.dataframe(df)
+        else:
+            st.error("Confusion Matrix file not found in app folder.")
+
+
+
+# --------------------------------------------------
+# View Classification Report
+# --------------------------------------------------
+elif mode == "View Classification Report":
+
+    st.header("Classification Report of Models...")
+
+    confusion_matrix= {
+        "Logistic Regression": "model/logistic_regression_classification_report",
+        "Decision Tree": "model/decision_tree_classification_report",
+        "KNN": "model/knn_classification_report",
+        "Naive Bayes": "model/gaussian_nb_classification_report",
+        "Random Forest": "model/random_forest_classification_report",
+        "XGBoost": "model/xgboost_classification_report",
+    }
+    
+
+    model_choice = st.selectbox(
+        "Select Model to view Classification Report",
+        models,
+        index=None,
+        placeholder="Select a model"
+    )
+
+    if model_choice:
+
+        CLSSN_PATH = Path(confusion_matrix[model_choice])
+
+        if CLSSN_PATH.exists():
+            st.text(CLSSN_PATH)
+        else:
+            st.error("Classification Report file not found in app folder.")
     
