@@ -276,7 +276,7 @@ def perform_pre_processing(model_choice, df):
     # Create a copy for feature engineering
     df_engineered = df.copy()
     
-    if model_choice != "XGBoost"
+    if model_choice != "XGBoost":
         
         # 1. Screen Area (px_height * px_width)
         df_engineered['screen_area'] = df_engineered['px_height'] * df_engineered['px_width']
