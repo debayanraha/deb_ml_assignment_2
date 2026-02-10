@@ -44,7 +44,7 @@ st.warning("Dear Sir/Madam, If the App fails, that might be envirnmental issue! 
 # --------------------------------------------------
 mode = st.radio(
     "Choose Action",
-    ["Train a Model", "Predict a Model"],
+    ["Train a Model", "Predict a Model", "Show Evaluation Metrics"],
     index=None,
     key="action_mode"
 )
@@ -160,7 +160,7 @@ elif mode == "Predict a Model":
         "Logistic Regression": joblib.load("model/logistic_regression_model.pkl"),
         "Decision Tree": joblib.load("model/decision_tree_model.pkl"),
         "KNN": joblib.load("model/knn_model.pkl"),
-        "Gaussian Naive Bayes": joblib.load("model/gaussian_nb_model.pkl"),
+        "Naive Bayes": joblib.load("model/gaussian_nb_model.pkl"),
         "Random Forest": joblib.load("model/random_forest_model.pkl"),
         "XGBoost": joblib.load("model/xgboost_model.pkl"),
     }
@@ -201,3 +201,43 @@ elif mode == "Predict a Model":
         
     else:
         st.info("Please confirm to proceed.")
+
+
+# --------------------------------------------------
+# Show Evaluation Metrics
+# --------------------------------------------------
+elif mode == "View Evaluation Metrics":
+
+    st.header("Evaluation Metrics of Models...")
+
+    evaluation_metric = {
+        "Logistic Regression": "model/logistic_regression_evaluation_metrics.csv",
+        "Decision Tree": "model/decision_tree_evaluation_metrics.csv",
+        "KNN": "model/knn_evaluation_metrics.csv",
+        "Naive Bayes": "model/gaussian_nb_evaluation_metrics.csv",
+        "Random Forest": "model/random_forest_evaluation_metrics.csv",
+        "XGBoost": "model/xgboost_evaluation_metrics.csv",
+    }
+    
+
+    model_choice = st.selectbox(
+        "Select Model to view Evaluation Metrics",
+        models,
+        index=None,
+        placeholder="Select a model"
+    )
+
+    if model_choice:
+
+        METRIC_PATH = Path(evaluation_metric[model_choice])
+    
+        @st.cache_data
+        def load_local_csv(path):
+            return pd.read_csv(path)
+        
+        if TEST_IN_DATA_PATH.exists():
+            df = load_local_csv(TEST_IN_DATA_PATH)
+            st.dataframe(df)
+        else:
+            st.error("evaluation_metric file not found in app folder.")
+    
