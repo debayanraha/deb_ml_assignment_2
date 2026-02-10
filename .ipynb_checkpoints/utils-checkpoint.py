@@ -273,10 +273,10 @@ def load_model(model_name):
 
 def perform_pre_processing(model_choice, df):
 
+    # Create a copy for feature engineering
+    df_engineered = df.copy()
+    
     if model_choice != "XGBoost"
-
-        # Create a copy for feature engineering
-        df_engineered = df.copy()
         
         # 1. Screen Area (px_height * px_width)
         df_engineered['screen_area'] = df_engineered['px_height'] * df_engineered['px_width']
@@ -337,15 +337,11 @@ def perform_pre_processing(model_choice, df):
             for feature in add2_features:
                 print(f"✓ {feature}")
     
-    
-            
         print(f"\nTotal Features: {df_engineered.shape[1] - 1} (Original: {df.shape[1] - 1}, New: {len(new_features)+len(add_features)+len(add2_features)+len(add3_features)})")
 
-    elif  model_choice == "XGBoost":
 
-        # Create enhanced features for XGBoost
-        df_engineered = df.copy()
-        
+    elif  model_choice == "XGBoost":
+       
         # 1. Screen features
         df_engineered['screen_area'] = df_engineered['px_height'] * df_engineered['px_width']
         df_engineered['screen_size'] = df_engineered['sc_h'] * df_engineered['sc_w']
