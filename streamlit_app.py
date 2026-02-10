@@ -235,8 +235,8 @@ elif mode == "View Evaluation Metrics":
         def load_local_csv(path):
             return pd.read_csv(path)
         
-        if TEST_IN_DATA_PATH.exists():
-            df = load_local_csv(TEST_IN_DATA_PATH)
+        if METRIC_PATH.exists():
+            df = load_local_csv(METRIC_PATH)
             st.dataframe(df)
         else:
             st.error("evaluation_metric file not found in app folder.")
