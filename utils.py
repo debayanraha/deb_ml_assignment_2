@@ -337,7 +337,7 @@ def perform_pre_processing(model_choice, df):
             for feature in add2_features:
                 print(f"✓ {feature}")
     
-        print(f"\nTotal Features: {df_engineered.shape[1] - 1} (Original: {df.shape[1] - 1}, New: {len(new_features)+len(add_features)+len(add2_features)+len(add3_features)})")
+        print(f"\nTotal Features: {df_engineered.shape[1] - 1} (Original: {df.shape[1] - 1}, New: {len(new_features)+len(add_features)+len(add2_features)})")
 
 
     elif  model_choice == "XGBoost":
