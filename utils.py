@@ -360,6 +360,7 @@ def predict_model(model, df):
 
     preds = model.predict(X)
     df["prediction"] = y_pred
+    df["prediction_Prob_Class"] = y_proba
     # df["Prob_Class_0"] = y_proba[:10, 0]
     # df["Prob_Class_1"] = y_proba[:10, 1]
     # df["Prob_Class_2"] = y_proba[:10, 2]
