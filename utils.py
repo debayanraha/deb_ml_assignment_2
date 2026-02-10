@@ -306,7 +306,12 @@ def perform_pre_processing(model_choice, df):
     for feature in new_features:
         print(f"✓ {feature}")
 
-        
+
+    add_features = []
+    add2_features = []
+    add3_features = []
+    
+    
     if model_choice == "Decision Tree" or model_choice == "KNN" or model_choice == "Random Forest" or model_choice == "XGBoost":
         
         # 7. Memory-to-Weight Ratio
