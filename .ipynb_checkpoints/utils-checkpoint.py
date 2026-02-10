@@ -275,9 +275,11 @@ def perform_pre_processing(model_choice, df):
 
     # Create a copy for feature engineering
     df_engineered = df.copy()
-    
+
+    print("out side IF")
     if model_choice != "XGBoost":
-        
+
+        print("in side IF")
         # 1. Screen Area (px_height * px_width)
         df_engineered['screen_area'] = df_engineered['px_height'] * df_engineered['px_width']
         
@@ -341,7 +343,9 @@ def perform_pre_processing(model_choice, df):
 
 
     elif  model_choice == "XGBoost":
-       
+
+        print("in side ElIF")
+        
         # 1. Screen features
         df_engineered['screen_area'] = df_engineered['px_height'] * df_engineered['px_width']
         df_engineered['screen_size'] = df_engineered['sc_h'] * df_engineered['sc_w']

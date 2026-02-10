@@ -193,7 +193,7 @@ elif mode == "Predict a Model":
                     st.dataframe(outdf.head())
 
                     st.download_button(
-                    "⬇️ Download Mobile Price Prediction Output",
+                    "⬇️ Download Full Mobile Price Prediction Output",
                     outdf.to_csv(index=False).encode("utf-8"),
                     "mobile_price_classification_test_prediction.csv",
                     "text/csv",
