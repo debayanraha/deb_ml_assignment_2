@@ -20,6 +20,11 @@ from utils import predict_logistic_regression, predict_decision_tree, predict_kn
 
 st.set_page_config(page_title="Mobile Price Classification", layout="wide")
 
+# Initialize session state
+if "confirmed" not in st.session_state:
+    st.session_state.confirmed = False
+
+
 
 # Page refresh button at top
 col1, col2, col3 = st.columns([1, 1, 1])
