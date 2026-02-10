@@ -21,6 +21,9 @@ st.set_page_config(page_title="Mobile Price Classification", layout="wide")
 col1, col2, col3 = st.columns([1, 1, 1])
 with col1:
     if st.button("🔄 Reset/Refresh App", type="primary"):
+        for key in ["action_mode"]:
+            if key in st.session_state:
+                del st.session_state[key]
         st.rerun()
 
 st.markdown("---")
@@ -34,7 +37,8 @@ st.warning("Dear Sir/Madam, If the App fails, that might be envirnmental issue! 
 mode = st.radio(
     "Choose Action",
     ["Train a Model", "Predict a Model"],
-    index=None
+    index=None,
+    key="action_mode"
 )
 
 st.markdown("---")
