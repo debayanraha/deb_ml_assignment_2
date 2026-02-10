@@ -288,10 +288,10 @@ def predict(model_name, df):
     return df, output_path
 
 
-def predict_logistic_regression(df):
+def predict_model(model, df):
 
-    model = joblib.load("model/logistic_regression_model.pkl")
-    models["Logistic Regression"] = model
+    # model = joblib.load("model/logistic_regression_model.pkl")
+    # models["Logistic Regression"] = model
     scaler = joblib.load("model/standard_scaler.pkl")
 
     st.success(f"The Selected Model: {model}")

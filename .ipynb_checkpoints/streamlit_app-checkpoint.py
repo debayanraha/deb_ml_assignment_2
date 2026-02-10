@@ -191,7 +191,7 @@ else:
                     
                     # st.success(f"Selected model: {model_choice}")
                     if model_choice == "Logistic Regression":
-                        outdf = predict_logistic_regression(df)
+                        outdf = predict_model(models[model_choice], df)
                         
                     elif model_choice == "Decision Tree":
                         outdf = predict_decision_tree(df)
