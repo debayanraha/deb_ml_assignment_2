@@ -11,11 +11,9 @@ from sklearn.metrics import (
 )
 import seaborn as sns
 import matplotlib.pyplot as plt
-from utils import run_notebook, get_model_path, train_model, predict
+from utils import run_notebook, get_model_path, train_model, predict_model
 from utils import display_notebook_results, run_notebook_to_html
 from utils import convert_notebook_to_html, display_notebook
-from utils import predict_model, predict_decision_tree, predict_knn, predict_naive_bayes, predict_random_forest, predict_xgboost
-
 
 
 st.set_page_config(page_title="Mobile Price Classification", layout="wide")
@@ -140,7 +138,7 @@ elif mode == "Predict a Model":
     
     source = st.radio(
         "Choose your test dataset source:",
-        ["Predict using Built-in Test Dataset", "Upload your New Test Dataset"]
+        ["Predict using above Built-in Test Dataset", "Upload your New Test Dataset"]
     )
     
     if source == "Predict using Built-in Test Dataset":
@@ -190,7 +188,7 @@ elif mode == "Predict a Model":
                     
                     # st.success(f"Selected model: {model_choice}")
                     if model_choice == "Logistic Regression":
-                        outdf = predict_model(models[model_choice], df)
+                        outdf = predict_model(model_choice, models[model_choice], df)
                         
                     elif model_choice == "Decision Tree":
                         outdf = predict_decision_tree(df)
@@ -215,7 +213,7 @@ elif mode == "Predict a Model":
                     st.dataframe(outdf.head())
 
                     st.download_button(
-                    "⬇️ Download Prediction Output",
+                    "⬇️ Download Mobile Price Prediction Output",
                     outdf.to_csv(index=False).encode("utf-8"),
                     "mobile_price_classification_test_prediction.csv",
                     "text/csv",

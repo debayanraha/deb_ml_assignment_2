@@ -271,31 +271,8 @@ def load_model(model_name):
 # 3. PREDICTION
 # --------------------------------------------------
 
-def predict(model_name, df):
-    model, scaler = load_model(model_name)
-
-    X = df.copy()
-
-    if model_name in ["Logistic Regression", "KNN", "Naive Bayes"]:
-        X = scaler.transform(X)
-
-    preds = model.predict(X)
-    df["prediction"] = preds
-
-    output_path = DATA_DIR / "prediction_output.csv"
-    df.to_csv(output_path, index=False)
-
-    return df, output_path
-
-
-def predict_model(model, df):
-
-    # model = joblib.load("model/logistic_regression_model.pkl")
-    # models["Logistic Regression"] = model
-    scaler = joblib.load("model/standard_scaler.pkl")
-
-    st.success(f"The Selected Model: {model}")
-
+def perform_pre_processing(df):
+    
     # Create a copy for feature engineering
     df_engineered = df.copy()
     
@@ -319,41 +296,67 @@ def predict_model(model, df):
     # 6. Performance Score (ram * n_cores * clock_speed)
     df_engineered['performance_score'] = df_engineered['ram'] * df_engineered['n_cores'] * df_engineered['clock_speed']
     
-    st.info("New Features Created:")
-    st.info("="*80)
+    # 7. Memory-to-Weight Ratio
+    df_engineered['memory_weight_ratio'] = df_engineered['int_memory'] / (df_engineered['mobile_wt'] + 1)
+    
+    # 8. Pixel Density (approximation)
+    df_engineered['pixel_density'] = df_engineered['screen_area'] / (df_engineered['screen_size'] + 1)
+    
+    # 9. Battery per Talk Time
+    df_engineered['battery_per_talk'] = df_engineered['battery_power'] / (df_engineered['talk_time'] + 1)
+    
+    # 10. Average Camera MP
+    df_engineered['avg_camera_mp'] = (df_engineered['fc'] + df_engineered['pc']) / 2
+    
+    print("New Features Created:")
     new_features = ['screen_area', 'screen_size', 'total_camera_mp', 'feature_count', 
-                    'battery_efficiency', 'performance_score']
+                    'battery_efficiency', 'performance_score', 'memory_weight_ratio', 
+                    'pixel_density', 'battery_per_talk', 'avg_camera_mp']
     for feature in new_features:
-        st.info(f"✓ {feature}")
+        print(f"✓ {feature}")
     
-    st.info(f"\nTotal Features: {df_engineered.shape[1] - 1} (Original: {df.shape[1] - 1}, New: {len(new_features)})")
-    df_engineered.head()
-    
+    print(f"\nTotal Features: {df_engineered.shape[1] - 1} (Original: {df.shape[1] - 1}, New: {len(new_features)})")
+
     
     # Check for missing values
-    st.info("Missing Values:")
-    st.info("="*80)
     missing_values = df_engineered.isnull().sum()
-    st.info(missing_values)
     st.info(f"\nTotal missing values: {missing_values.sum()}")
     
     if missing_values.sum() == 0:
         st.info("\n✓ No missing values found!")
     
     # Check for duplicate rows
-    st.info("Duplicate Rows:")
-    st.info("="*80)
     duplicates = df_engineered.duplicated().sum()
     st.info(f"Number of duplicate rows: {duplicates}")
     
     if duplicates == 0:
         st.info("\n✓ No duplicate rows found!")
     
-    X = df_engineered.copy()
-    
-    # Scaling logic
-    X_test_scaled = scaler.transform(X)
-    
+    return df_engineered
+
+
+
+def predict_model(model_choice, model, df):
+
+    st.success(f"The Selected Model: {model}")
+
+    X = perform_pre_processing(df)
+
+    if model_choice == "Logistic Regression":
+        
+        # Scaling logic
+        scaler = joblib.load("model/standard_scaler.pkl")
+        X_test_scaled = scaler.transform(X)
+
+    elif model_choice == "KNN":
+        
+        # Scaling logic
+        scaler = joblib.load("model/knn_scaler.pkl")
+        X_test_scaled = scaler.transform(X)
+
+    else:
+        X_test_scaled = X.copy()
+
     
     y_pred = model.predict(X_test_scaled)
     y_proba = model.predict_proba(X_test_scaled)
@@ -366,62 +369,5 @@ def predict_model(model, df):
     df["Prob_Class_3"] = y_proba[:, 3]
 
     return df
-    
 
-
-
-def predict_decision_tree(df):
-
-
-    model = joblib.load("model/decision_tree_model.pkl")
-    models["Decision Tree"] = model
-
-    st.success(f"The Selected Model: {model}")
-
-    return
-
-
-def predict_knn(df):
-
-    model = joblib.load("model/knn_model.pkl")
-    models["KNN"] = model
-
-    st.success(f"The Selected Model: {model}")
-
-    return
-
-    
-
-def predict_naive_bayes(df):
-
-    model = joblib.load("model/gaussian_nb_model.pkl")
-    models["Gaussian Naive Bayes"] = model
-
-    st.success(f"The Selected Model: {model}")
-
-    return
-
-
-    
-def predict_random_forest(df):
-
-    model = joblib.load("model/random_forest_model.pkl")
-    models["Random Forest"] = model
-
-    st.success(f"The Selected Model: {model}")
-
-    return
-
-
-
-
-def predict_xgboost(df):
-
-
-    model = joblib.load("model/xgboost_model.pkl")
-    models["XGBoost"] = model
-
-    st.success(f"The Selected Model: {model}")
-
-    return
 
