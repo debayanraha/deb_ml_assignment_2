@@ -205,7 +205,6 @@ else:
                 
                     else:
                         raise ValueError(f"Unsupported model: {model_choice}")
-                        return
 
                     st.success("Prediction completed!")
                     outdf.to_csv(TEST_OUT_DATA_PATH, index=False)
