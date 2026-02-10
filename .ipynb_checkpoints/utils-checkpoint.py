@@ -296,22 +296,26 @@ def perform_pre_processing(df):
     # 6. Performance Score (ram * n_cores * clock_speed)
     df_engineered['performance_score'] = df_engineered['ram'] * df_engineered['n_cores'] * df_engineered['clock_speed']
     
-    # 7. Memory-to-Weight Ratio
-    df_engineered['memory_weight_ratio'] = df_engineered['int_memory'] / (df_engineered['mobile_wt'] + 1)
+    # # 7. Memory-to-Weight Ratio
+    # df_engineered['memory_weight_ratio'] = df_engineered['int_memory'] / (df_engineered['mobile_wt'] + 1)
     
-    # 8. Pixel Density (approximation)
-    df_engineered['pixel_density'] = df_engineered['screen_area'] / (df_engineered['screen_size'] + 1)
+    # # 8. Pixel Density (approximation)
+    # df_engineered['pixel_density'] = df_engineered['screen_area'] / (df_engineered['screen_size'] + 1)
     
-    # 9. Battery per Talk Time
-    df_engineered['battery_per_talk'] = df_engineered['battery_power'] / (df_engineered['talk_time'] + 1)
+    # # 9. Battery per Talk Time
+    # df_engineered['battery_per_talk'] = df_engineered['battery_power'] / (df_engineered['talk_time'] + 1)
     
-    # 10. Average Camera MP
-    df_engineered['avg_camera_mp'] = (df_engineered['fc'] + df_engineered['pc']) / 2
+    # # 10. Average Camera MP
+    # df_engineered['avg_camera_mp'] = (df_engineered['fc'] + df_engineered['pc']) / 2
     
     print("New Features Created:")
+    # new_features = ['screen_area', 'screen_size', 'total_camera_mp', 'feature_count', 
+    #                 'battery_efficiency', 'performance_score', 'memory_weight_ratio', 
+    #                 'pixel_density', 'battery_per_talk', 'avg_camera_mp']
     new_features = ['screen_area', 'screen_size', 'total_camera_mp', 'feature_count', 
-                    'battery_efficiency', 'performance_score', 'memory_weight_ratio', 
-                    'pixel_density', 'battery_per_talk', 'avg_camera_mp']
+                'battery_efficiency', 'performance_score', 'memory_weight_ratio', 
+                'pixel_density', 'battery_per_talk', 'avg_camera_mp']
+
     for feature in new_features:
         print(f"✓ {feature}")
     

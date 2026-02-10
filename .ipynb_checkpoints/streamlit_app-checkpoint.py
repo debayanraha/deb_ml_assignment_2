@@ -107,7 +107,7 @@ if mode == "Train a Model":
 # --------------------------------------------------
 elif mode == "Predict a Model":
 
-    st.header("Predict Using a Trained Model...")
+    st.header("Predict Mobile Price using Trained Models...")
 
     TEST_IN_DATA_PATH = Path("data/mobile_price_classification_test.csv")
     TEST_OUT_DATA_PATH = Path("data/mobile_price_classification_test_prediction.csv")
@@ -134,10 +134,10 @@ elif mode == "Predict a Model":
     )
     
     
-    st.subheader("Make a Prediction for Mobile Price")
+    st.subheader("Use Built-in Test Dataset or Upload a Custom Test Dataset")
     
     source = st.radio(
-        "Choose your test dataset source:",
+        "select your preference:",
         ["Predict using above Built-in Test Dataset", "Upload your New Test Dataset"]
     )
     
