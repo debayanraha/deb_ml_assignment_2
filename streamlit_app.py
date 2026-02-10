@@ -37,7 +37,7 @@ with col1:
 st.markdown("---")
 
 st.title("Machine Learning Models (Mobile Price Classification)")
-st.warning("Dear Sir/Madam, If the App fails, that might be envirnmental issue! Please Call/WhatsApp me at +91-9177762671. - Regards, Debayan.")
+st.warning("Dear Sir/Madam, If the App fails, that might be environmental issue! Please Call/WhatsApp me at +91-9177762671. - Regards, Debayan.")
 
 # --------------------------------------------------
 # MODE SELECTION
