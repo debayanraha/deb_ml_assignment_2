@@ -276,10 +276,8 @@ def perform_pre_processing(model_choice, df):
     # Create a copy for feature engineering
     df_engineered = df.copy()
 
-    print("out side IF")
     if model_choice != "XGBoost":
 
-        print("in side IF")
         # 1. Screen Area (px_height * px_width)
         df_engineered['screen_area'] = df_engineered['px_height'] * df_engineered['px_width']
         
@@ -302,13 +300,13 @@ def perform_pre_processing(model_choice, df):
         
     
         
-        print("New Features Created:")
+        st.info("New Features Created:")
     
         new_features = ['screen_area', 'screen_size', 'total_camera_mp', 'feature_count', 
                     'battery_efficiency', 'performance_score']
     
         for feature in new_features:
-            print(f"✓ {feature}")
+            st.info(f"✓ {feature}")
     
     
         add_features = []
@@ -324,7 +322,7 @@ def perform_pre_processing(model_choice, df):
     
             add_features = ['memory_weight_ratio', 'pixel_density']
             for feature in add_features:
-                print(f"✓ {feature}")
+                st.info(f"✓ {feature}")
     
     
         if model_choice == "Random Forest":
@@ -337,15 +335,13 @@ def perform_pre_processing(model_choice, df):
         
             add2_features = ['battery_per_talk', 'avg_camera_mp']
             for feature in add2_features:
-                print(f"✓ {feature}")
+                st.info(f"✓ {feature}")
     
-        print(f"\nTotal Features: {df_engineered.shape[1] - 1} (Original: {df.shape[1] - 1}, New: {len(new_features)+len(add_features)+len(add2_features)})")
+        st.info(f"\nTotal Features: {df_engineered.shape[1] - 1} (Original: {df.shape[1] - 1}, New: {len(new_features)+len(add_features)+len(add2_features)})")
 
 
     elif  model_choice == "XGBoost":
 
-        print("in side ElIF")
-        
         # 1. Screen features
         df_engineered['screen_area'] = df_engineered['px_height'] * df_engineered['px_width']
         df_engineered['screen_size'] = df_engineered['sc_h'] * df_engineered['sc_w']
@@ -379,11 +375,11 @@ def perform_pre_processing(model_choice, df):
         df_engineered['ram_battery_interaction'] = df_engineered['ram'] * df_engineered['battery_power']
         
         new_features = [col for col in df_engineered.columns if col not in df.columns]
-        print(f"Created {len(new_features)} new features:")
+        st.info(f"Created {len(new_features)} new features:")
         for feat in new_features:
-            print(f"  ✓ {feat}")
+            st.info(f"  ✓ {feat}")
             
-        print(f"\nTotal features: {df_engineered.shape[1] - 1}")
+        st.info(f"\nTotal features: {df_engineered.shape[1] - 1}")
         
 
     
