@@ -272,86 +272,119 @@ def load_model(model_name):
 # --------------------------------------------------
 
 def perform_pre_processing(model_choice, df):
-    
-    # Create a copy for feature engineering
-    df_engineered = df.copy()
-    
-    # 1. Screen Area (px_height * px_width)
-    df_engineered['screen_area'] = df_engineered['px_height'] * df_engineered['px_width']
-    
-    # 2. Screen Size (sc_h * sc_w)
-    df_engineered['screen_size'] = df_engineered['sc_h'] * df_engineered['sc_w']
-    
-    # 3. Camera Quality (fc + pc)
-    df_engineered['total_camera_mp'] = df_engineered['fc'] + df_engineered['pc']
-    
-    # 4. Feature Count (sum of binary features)
-    df_engineered['feature_count'] = (df_engineered['blue'] + df_engineered['dual_sim'] + 
-                                      df_engineered['four_g'] + df_engineered['three_g'] + 
-                                      df_engineered['touch_screen'] + df_engineered['wifi'])
-    
-    # 5. Battery Efficiency (battery_power / mobile_wt)
-    df_engineered['battery_efficiency'] = df_engineered['battery_power'] / (df_engineered['mobile_wt'] + 1)
-    
-    # 6. Performance Score (ram * n_cores * clock_speed)
-    df_engineered['performance_score'] = df_engineered['ram'] * df_engineered['n_cores'] * df_engineered['clock_speed']
-    
 
-    
-    print("New Features Created:")
+    if model_choice != "XGBoost"
 
-    new_features = ['screen_area', 'screen_size', 'total_camera_mp', 'feature_count', 
-                'battery_efficiency', 'performance_score']
-
-    for feature in new_features:
-        print(f"✓ {feature}")
-
-
-    add_features = []
-    add2_features = []
-    add3_features = []
-    
-    
-    if model_choice == "Decision Tree" or model_choice == "KNN" or model_choice == "Random Forest" or model_choice == "XGBoost":
+        # Create a copy for feature engineering
+        df_engineered = df.copy()
         
-        # 7. Memory-to-Weight Ratio
-        df_engineered['memory_weight_ratio'] = df_engineered['int_memory'] / (df_engineered['mobile_wt'] + 1)
+        # 1. Screen Area (px_height * px_width)
+        df_engineered['screen_area'] = df_engineered['px_height'] * df_engineered['px_width']
         
-        # 8. Pixel Density (approximation)
-        df_engineered['pixel_density'] = df_engineered['screen_area'] / (df_engineered['screen_size'] + 1)
-
-        add_features = ['memory_weight_ratio', 'pixel_density']
-        for feature in add_features:
+        # 2. Screen Size (sc_h * sc_w)
+        df_engineered['screen_size'] = df_engineered['sc_h'] * df_engineered['sc_w']
+        
+        # 3. Camera Quality (fc + pc)
+        df_engineered['total_camera_mp'] = df_engineered['fc'] + df_engineered['pc']
+        
+        # 4. Feature Count (sum of binary features)
+        df_engineered['feature_count'] = (df_engineered['blue'] + df_engineered['dual_sim'] + 
+                                          df_engineered['four_g'] + df_engineered['three_g'] + 
+                                          df_engineered['touch_screen'] + df_engineered['wifi'])
+        
+        # 5. Battery Efficiency (battery_power / mobile_wt)
+        df_engineered['battery_efficiency'] = df_engineered['battery_power'] / (df_engineered['mobile_wt'] + 1)
+        
+        # 6. Performance Score (ram * n_cores * clock_speed)
+        df_engineered['performance_score'] = df_engineered['ram'] * df_engineered['n_cores'] * df_engineered['clock_speed']
+        
+    
+        
+        print("New Features Created:")
+    
+        new_features = ['screen_area', 'screen_size', 'total_camera_mp', 'feature_count', 
+                    'battery_efficiency', 'performance_score']
+    
+        for feature in new_features:
             print(f"✓ {feature}")
-
-
-    if model_choice == "Random Forest" or model_choice == "XGBoost":
+    
+    
+        add_features = []
+        add2_features = []
         
-        # 9. Battery per Talk Time
+        if model_choice == "Decision Tree" or model_choice == "KNN" or model_choice == "Random Forest" or model_choice == "XGBoost":
+            
+            # 7. Memory-to-Weight Ratio
+            df_engineered['memory_weight_ratio'] = df_engineered['int_memory'] / (df_engineered['mobile_wt'] + 1)
+            
+            # 8. Pixel Density (approximation)
+            df_engineered['pixel_density'] = df_engineered['screen_area'] / (df_engineered['screen_size'] + 1)
+    
+            add_features = ['memory_weight_ratio', 'pixel_density']
+            for feature in add_features:
+                print(f"✓ {feature}")
+    
+    
+        if model_choice == "Random Forest":
+            
+            # 9. Battery per Talk Time
+            df_engineered['battery_per_talk'] = df_engineered['battery_power'] / (df_engineered['talk_time'] + 1)
+            
+            # 10. Average Camera MP
+            df_engineered['avg_camera_mp'] = (df_engineered['fc'] + df_engineered['pc']) / 2
+        
+            add2_features = ['battery_per_talk', 'avg_camera_mp']
+            for feature in add2_features:
+                print(f"✓ {feature}")
+    
+    
+            
+        print(f"\nTotal Features: {df_engineered.shape[1] - 1} (Original: {df.shape[1] - 1}, New: {len(new_features)+len(add_features)+len(add2_features)+len(add3_features)})")
+
+    elif  model_choice == "XGBoost":
+
+        # Create enhanced features for XGBoost
+        df_engineered = df.copy()
+        
+        # 1. Screen features
+        df_engineered['screen_area'] = df_engineered['px_height'] * df_engineered['px_width']
+        df_engineered['screen_size'] = df_engineered['sc_h'] * df_engineered['sc_w']
+        df_engineered['pixel_density'] = df_engineered['screen_area'] / (df_engineered['screen_size'] + 1)
+        
+        # 2. Camera features
+        df_engineered['total_camera_mp'] = df_engineered['fc'] + df_engineered['pc']
+        df_engineered['avg_camera_mp'] = df_engineered['total_camera_mp'] / 2
+        df_engineered['camera_ratio'] = df_engineered['pc'] / (df_engineered['fc'] + 1)
+        
+        # 3. Performance features
+        df_engineered['performance_score'] = df_engineered['ram'] * df_engineered['n_cores'] * df_engineered['clock_speed']
+        df_engineered['ram_per_core'] = df_engineered['ram'] / df_engineered['n_cores']
+        
+        # 4. Battery features
+        df_engineered['battery_efficiency'] = df_engineered['battery_power'] / (df_engineered['mobile_wt'] + 1)
         df_engineered['battery_per_talk'] = df_engineered['battery_power'] / (df_engineered['talk_time'] + 1)
         
-        # 10. Average Camera MP
-        df_engineered['avg_camera_mp'] = (df_engineered['fc'] + df_engineered['pc']) / 2
-    
-        add2_features = ['battery_per_talk', 'avg_camera_mp']
-        for feature in add2_features:
-            print(f"✓ {feature}")
-
-    if model_choice == "XGBoost":
-
-        df_engineered['camera_ratio'] = df_engineered['pc'] / (df_engineered['fc'] + 1)
-        df_engineered['ram_per_core'] = df_engineered['ram'] / df_engineered['n_cores']
-        df_engineered['total_memory'] = df_engineered['int_memory'] + df_engineered['ram'] / 1000   
-        df_engineered['is_premium'] = ((df_engineered['ram'] > 2500) & 
-                               (df_engineered['battery_power'] > 1500)).astype(int)
-        df_engineered['ram_battery_interaction'] = df_engineered['ram'] * df_engineered['battery_power']
-
-        add3_features = ['amera_ratio', 'ram_per_core', 'total_memory', 'is_premium', 'ram_battery_interaction']
-        for feature in add3_features:
-            print(f"✓ {feature}")
-
+        # 5. Memory features
+        df_engineered['memory_weight_ratio'] = df_engineered['int_memory'] / (df_engineered['mobile_wt'] + 1)
+        df_engineered['total_memory'] = df_engineered['int_memory'] + df_engineered['ram'] / 1000
         
-    print(f"\nTotal Features: {df_engineered.shape[1] - 1} (Original: {df.shape[1] - 1}, New: {len(new_features)+len(add_features)+len(add2_features)+len(add3_features)})")
+        # 6. Feature count
+        df_engineered['feature_count'] = (df_engineered['blue'] + df_engineered['dual_sim'] + 
+                                          df_engineered['four_g'] + df_engineered['three_g'] + 
+                                          df_engineered['touch_screen'] + df_engineered['wifi'])
+        
+        # 7. Price indicators
+        df_engineered['is_premium'] = ((df_engineered['ram'] > 2500) & 
+                                       (df_engineered['battery_power'] > 1500)).astype(int)
+        df_engineered['ram_battery_interaction'] = df_engineered['ram'] * df_engineered['battery_power']
+        
+        new_features = [col for col in df_engineered.columns if col not in df.columns]
+        print(f"Created {len(new_features)} new features:")
+        for feat in new_features:
+            print(f"  ✓ {feat}")
+            
+        print(f"\nTotal features: {df_engineered.shape[1] - 1}")
+        
 
     
     # Check for missing values
