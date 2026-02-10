@@ -160,7 +160,7 @@ elif mode == "Predict a Model":
         "Logistic Regression": joblib.load("model/logistic_regression_model.pkl"),
         "Decision Tree": joblib.load("model/decision_tree_model.pkl"),
         "KNN": joblib.load("model/knn_model.pkl"),
-        "Gaussian Naive Bayes": joblib.load("model/gaussian_nb_model.pkl"),
+        "Naive Bayes": joblib.load("model/gaussian_nb_model.pkl"),
         "Random Forest": joblib.load("model/random_forest_model.pkl"),
         "XGBoost": joblib.load("model/xgboost_model.pkl"),
     }

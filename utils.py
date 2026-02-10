@@ -256,7 +256,7 @@ def load_model(model_name):
         "Logistic Regression": joblib.load("model/logistic_regression_model.pkl"),
         "Decision Tree": joblib.load("model/decision_tree_model.pkl"),
         "KNN": joblib.load("model/knn_model.pkl"),
-        "Gaussian Naive Bayes": joblib.load("model/gaussian_nb_model.pkl"),
+        "Naive Bayes": joblib.load("model/gaussian_nb_model.pkl"),
         "Random Forest": joblib.load("model/random_forest_model.pkl"),
         "XGBoost": joblib.load("model/xgboost_model.pkl"),
     }
@@ -271,7 +271,7 @@ def load_model(model_name):
 # 3. PREDICTION
 # --------------------------------------------------
 
-def perform_pre_processing(df):
+def perform_pre_processing(model_choice, df):
     
     # Create a copy for feature engineering
     df_engineered = df.copy()
@@ -296,30 +296,57 @@ def perform_pre_processing(df):
     # 6. Performance Score (ram * n_cores * clock_speed)
     df_engineered['performance_score'] = df_engineered['ram'] * df_engineered['n_cores'] * df_engineered['clock_speed']
     
-    # # 7. Memory-to-Weight Ratio
-    # df_engineered['memory_weight_ratio'] = df_engineered['int_memory'] / (df_engineered['mobile_wt'] + 1)
-    
-    # # 8. Pixel Density (approximation)
-    # df_engineered['pixel_density'] = df_engineered['screen_area'] / (df_engineered['screen_size'] + 1)
-    
-    # # 9. Battery per Talk Time
-    # df_engineered['battery_per_talk'] = df_engineered['battery_power'] / (df_engineered['talk_time'] + 1)
-    
-    # # 10. Average Camera MP
-    # df_engineered['avg_camera_mp'] = (df_engineered['fc'] + df_engineered['pc']) / 2
+
     
     print("New Features Created:")
-    # new_features = ['screen_area', 'screen_size', 'total_camera_mp', 'feature_count', 
-    #                 'battery_efficiency', 'performance_score', 'memory_weight_ratio', 
-    #                 'pixel_density', 'battery_per_talk', 'avg_camera_mp']
+
     new_features = ['screen_area', 'screen_size', 'total_camera_mp', 'feature_count', 
-                'battery_efficiency', 'performance_score', 'memory_weight_ratio', 
-                'pixel_density', 'battery_per_talk', 'avg_camera_mp']
+                'battery_efficiency', 'performance_score']
 
     for feature in new_features:
         print(f"✓ {feature}")
+
+        
+    if model_choice == "Decision Tree" or model_choice == "KNN" or model_choice == "Random Forest" or model_choice == "XGBoost":
+        
+        # 7. Memory-to-Weight Ratio
+        df_engineered['memory_weight_ratio'] = df_engineered['int_memory'] / (df_engineered['mobile_wt'] + 1)
+        
+        # 8. Pixel Density (approximation)
+        df_engineered['pixel_density'] = df_engineered['screen_area'] / (df_engineered['screen_size'] + 1)
+
+        add_features = ['memory_weight_ratio', 'pixel_density']
+        for feature in add_features:
+            print(f"✓ {feature}")
+
+
+    if model_choice == "Random Forest" or model_choice == "XGBoost":
+        
+        # 9. Battery per Talk Time
+        df_engineered['battery_per_talk'] = df_engineered['battery_power'] / (df_engineered['talk_time'] + 1)
+        
+        # 10. Average Camera MP
+        df_engineered['avg_camera_mp'] = (df_engineered['fc'] + df_engineered['pc']) / 2
     
-    print(f"\nTotal Features: {df_engineered.shape[1] - 1} (Original: {df.shape[1] - 1}, New: {len(new_features)})")
+        add2_features = ['battery_per_talk', 'avg_camera_mp']
+        for feature in add2_features:
+            print(f"✓ {feature}")
+
+    if model_choice == "XGBoost":
+
+        df_engineered['camera_ratio'] = df_engineered['pc'] / (df_engineered['fc'] + 1)
+        df_engineered['ram_per_core'] = df_engineered['ram'] / df_engineered['n_cores']
+        df_engineered['total_memory'] = df_engineered['int_memory'] + df_engineered['ram'] / 1000   
+        df_engineered['is_premium'] = ((df_engineered['ram'] > 2500) & 
+                               (df_engineered['battery_power'] > 1500)).astype(int)
+        df_engineered['ram_battery_interaction'] = df_engineered['ram'] * df_engineered['battery_power']
+
+        add3_features = ['amera_ratio', 'ram_per_core', 'total_memory', 'is_premium', 'ram_battery_interaction']
+        for feature in add3_features:
+            print(f"✓ {feature}")
+
+        
+    print(f"\nTotal Features: {df_engineered.shape[1] - 1} (Original: {df.shape[1] - 1}, New: {len(new_features)+len(add_features)+len(add2_features)+len(add3_features)})")
 
     
     # Check for missing values
@@ -344,7 +371,7 @@ def predict_model(model_choice, model, df):
 
     st.success(f"The Selected Model: {model}")
 
-    X = perform_pre_processing(df)
+    X = perform_pre_processing(model_choice, df)
 
     if model_choice == "Logistic Regression":
         
