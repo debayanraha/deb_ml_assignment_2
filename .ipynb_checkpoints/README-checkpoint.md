@@ -1,4 +1,4 @@
-# 📊 Mobile Price Classification using Machine Learning Models
+# Mobile Price Classification using Machine Learning Models
 
 ## a. Problem Statement
 
