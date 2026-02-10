@@ -11,7 +11,16 @@ from sklearn.metrics import (
 )
 import seaborn as sns
 import matplotlib.pyplot as plt
-from utils import run_notebook, get_model_path, train_model, predict, display_notebook_results, run_notebook_to_html, convert_notebook_to_html, display_notebook
+from utils import run_notebook, get_model_path, train_model, predict, 
+                display_notebook_results, run_notebook_to_html, 
+                convert_notebook_to_html, display_notebook,
+                predict_logistic_regression, 
+                predict_decision_tree,
+                predict_knn,
+                predict_naive_bayes,
+                predict_random_forest,
+                predict_xgboost
+
 
 
 st.set_page_config(page_title="Mobile Price Classification", layout="wide")
@@ -69,7 +78,7 @@ if mode == "Train a Model":
     if model_choice:
 
         # Use an expander to show logs so they don't clutter the UI
-        with st.expander("Click here to view Full Pre-Trained Logs and Metrics with Visualizations & Plots"):
+        with st.expander("Click here to view Pre-Trained Full Logs and Metrics with Visualizations & Plots"):
             # display_notebook_results(result)
             # components.html(html_content, height=800, scrolling=True)
 
@@ -80,8 +89,8 @@ if mode == "Train a Model":
             display_notebook(model_choice)
 
         
-        if st.button("🚀 or Freshly Train the Model"):
-            with st.spinner("Training your model! Please wait for less than 59 Seconds..."):
+        if st.button("🚀 or Freshly Train the Model again"):
+            with st.spinner("Training your model! Wait time not more than 59 Seconds..."):
                 success, html_content = run_notebook_to_html(model_choice)
             if success:
                 st.success(f"✅ {model_choice} trained and saved successfully!")
@@ -90,11 +99,6 @@ if mode == "Train a Model":
                 with st.expander("Click here to view CURRENT Training Logs & Metrics (without Visualizations)"):
                     # display_notebook_results(result)
                     components.html(html_content, height=800, scrolling=True)
-
-                    
-
-
-            
                     
             else:
                 st.error("❌ Training failed. Check notebook paths.")
@@ -104,4 +108,120 @@ if mode == "Train a Model":
 # PREDICT MODE
 # --------------------------------------------------
 else:
-    pass
+
+
+    st.header("Predict Using a Trained Model...")
+
+    TEST_IN_DATA_PATH = Path("data/mobile_price_classification_test.csv")
+    TEST_OUT_DATA_PATH = Path("data/mobile_price_classification_test_prediction.csv")
+
+    @st.cache_data
+    def load_local_csv(path):
+        return pd.read_csv(path)
+    
+    if TEST_IN_DATA_PATH.exists():
+        df = load_local_csv(TEST_IN_DATA_PATH)
+        st.success("Built-in Test Dataset loaded successfully, having first 5 rows as:")
+        st.dataframe(df.head())
+    else:
+        st.error("Dataset file not found in app folder.")
+    
+    
+    csv_bytes = df.to_csv(index=False).encode("utf-8")
+    
+    st.download_button(
+        label="⬇️ Download Built-in Test Dataset",
+        data=csv_bytes,
+        file_name="mobile_price_classification_test.csv",
+        mime="text/csv"
+    )
+    
+    
+    st.subheader("Make a Prediction for Mobile Price")
+    
+    source = st.radio(
+        "Choose your test dataset source:",
+        ["Predict using Built-in Test Dataset", "Upload your New Test Dataset"]
+    )
+    
+    if source == "Predict using Built-in Test Dataset":
+        df = load_local_csv(TEST_IN_DATA_PATH)    
+    else:
+        # Upload dataset
+        uploaded_file = st.file_uploader("Upload Test Dataset", type=["csv"])
+        if uploaded_file:
+            df = pd.read_csv(uploaded_file)
+    
+    st.subheader("Dataset Preview")
+    st.dataframe(df.head())
+
+    
+    
+    # Load models
+    models = {
+        "Logistic Regression": joblib.load("model/logistic_regression_model.pkl"),
+        "Decision Tree": joblib.load("model/decision_tree_model.pkl"),
+        "KNN": joblib.load("model/knn_model.pkl"),
+        "Gaussian Naive Bayes": joblib.load("model/gaussian_nb_model.pkl"),
+        "Random Forest": joblib.load("model/random_forest_model.pkl"),
+        "XGBoost": joblib.load("model/xgboost_model.pkl"),
+    }
+    
+    
+    # Confirmation button
+    if st.button("✅ Confirm dataset & proceed to model selection"):
+        st.session_state.confirmed = True
+    
+        
+    # Show selectbox ONLY after confirmation
+    if st.session_state.confirmed:
+        st.subheader("Select Machine Learning Model for Prediction")
+        model_choice = st.selectbox(
+            "Select Model",
+            options=["-- Select a model --"] + list(models.keys()),
+            index=0
+        )
+        if model_choice == "-- Select a model --":
+            st.warning("Please select a model to continue.")
+        else:
+            if st.button("🔮 Predict"):
+                with st.spinner("Running prediction..."):
+
+                    df = df.drop(['id', 'price_range'], axis=1, errors='ignore')
+                    
+                    # st.success(f"Selected model: {model_choice}")
+                    if model_choice == "Logistic Regression":
+                        outdf = predict_logistic_regression(df)
+                        
+                    elif model_choice == "Decision Tree":
+                        outdf = predict_decision_tree(df)
+                
+                    elif model_choice == "KNN":
+                        outdf = predict_knn(df)
+                
+                    elif model_choice == "Gaussian Naive Bayes":
+                        outdf = predict_naive_bayes(df)
+                
+                    elif model_choice == "Random Forest":
+                        outdf = predict_random_forest(df)
+                
+                    elif model_choice == "XGBoost":
+                        outdf = predict_xgboost(df)
+                
+                    else:
+                        raise ValueError(f"Unsupported model: {model_choice}")
+                        return
+
+                    st.success("Prediction completed!")
+                    outdf.to_csv(TEST_OUT_DATA_PATH, index=False)
+                    st.dataframe(outdf.head())
+
+                    st.download_button(
+                    "⬇️ Download Prediction Output",
+                    outdf.to_csv(index=False).encode("utf-8"),
+                    "mobile_price_classification_test_prediction.csv",
+                    "text/csv",
+        )
+        
+    else:
+        st.info("Please confirm to proceed.")
