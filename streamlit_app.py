@@ -317,7 +317,7 @@ elif mode == "View Classification Report":
 
         if CLSSN_PATH.exists():
             with open(CLSSN_PATH, "r") as f:
-            report_txt = f.read()
+                report_txt = f.read()
             st.text(report_txt)
         else:
             st.error("Classification Report file not found in app folder.")
