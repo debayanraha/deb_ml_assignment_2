@@ -107,8 +107,7 @@ if mode == "Train a Model":
 # --------------------------------------------------
 # PREDICT MODE
 # --------------------------------------------------
-else:
-
+else if mode == "Predict a Model":
 
     st.header("Predict Using a Trained Model...")
 
