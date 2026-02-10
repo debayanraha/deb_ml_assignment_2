@@ -316,7 +316,9 @@ elif mode == "View Classification Report":
         CLSSN_PATH = Path(confusion_matrix[model_choice])
 
         if CLSSN_PATH.exists():
-            st.text(CLSSN_PATH)
+            with open(CLSSN_PATH, "r") as f:
+            report_txt = f.read()
+            st.text(report_txt)
         else:
             st.error("Classification Report file not found in app folder.")
     
