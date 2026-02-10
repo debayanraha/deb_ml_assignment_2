@@ -11,15 +11,10 @@ from sklearn.metrics import (
 )
 import seaborn as sns
 import matplotlib.pyplot as plt
-from utils import run_notebook, get_model_path, train_model, predict, 
-                display_notebook_results, run_notebook_to_html, 
-                convert_notebook_to_html, display_notebook,
-                predict_logistic_regression, 
-                predict_decision_tree,
-                predict_knn,
-                predict_naive_bayes,
-                predict_random_forest,
-                predict_xgboost
+from utils import run_notebook, get_model_path, train_model, predict
+from utils import display_notebook_results, run_notebook_to_html
+from utils import convert_notebook_to_html, display_notebook
+from utils import predict_logistic_regression, predict_decision_tree, predict_knn, predict_naive_bayes, predict_random_forest, predict_xgboost
 
 
 
